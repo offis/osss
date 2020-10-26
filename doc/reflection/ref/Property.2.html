@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>class  Property</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.10">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>class  <A HREF="#DOC.DOCU">Property</A></H2></H2><BLOCKQUOTE>The Property class holds information about an object's property</BLOCKQUOTE>
+<HR>
+
+<H2>Inheritance:</H2>
+<APPLET CODE="ClassGraph.class" WIDTH=600 HEIGHT=65>
+<param name=classes value="CMemberBase,MMemberBase.html,CProperty,MProperty.2.html">
+<param name=before value="M,M">
+<param name=after value="Md_,M">
+<param name=indent value="0,1">
+<param name=arrowdir value="down">
+</APPLET>
+<HR>
+
+<DL>
+<P><DL>
+<DT><H3>Public Methods</H3><DD><DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif> <B><A HREF="#DOC.25.1">~Property</A></B>()
+<DD><I>destructor</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const std::type_info&amp; <B><A HREF="#DOC.25.2">getTypeInfo</A></B>() const 
+<DD><I>retrieve the std::type_info RTTI object </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>template&lt;class Object, class Value&gt;  void <B><A HREF="#DOC.25.3">get</A></B>(Value &amp;result, const Object* object) const 
+<DD><I>returns the value of the property </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>template&lt;class Object, class Value&gt;  void <B><A HREF="#DOC.25.4">set</A></B>(Object* object, const Value &amp;value) const 
+<DD><I>sets the property's value </I>
+</DL></P>
+
+</DL>
+<HR><H3>Inherited from <A HREF="MemberBase.html">MemberBase</A>:</H3>
+<DL>
+<P><DL>
+<DT><H3>Public Methods</H3><DD><DT>
+<IMG ALT="o" SRC=icon2.gif>inline   const <!1><A HREF="Class.2.html">Class</A>&amp; <B>getClass</B>() const 
+<DT>
+<IMG ALT="o" SRC=icon2.gif>inline   const <!1><A HREF="ACCESS_TYPE.html">ACCESS_TYPE</A> <B>getAccess</B>() const 
+<DT>
+<IMG ALT="o" SRC=icon2.gif>inline   const char* <B>getType</B>() const 
+<DT>
+<IMG ALT="o" SRC=icon2.gif>inline   const char* <B>getName</B>() const 
+</DL></P>
+
+<P><DL>
+<DT><H3>Protected Methods</H3><DD><DT>
+<IMG ALT="o" SRC=icon2.gif>inline   <!1><A HREF="MemberBase.html">MemberBase</A>&amp; <B>operator = </B>(const <!1><A HREF="MemberBase.html">MemberBase</A>&amp; other)
+</DL></P>
+
+</DL>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>The Property class holds information about an object's property</BLOCKQUOTE>
+<DL>
+
+<A NAME="~Property"></A>
+<A NAME="DOC.25.1"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B> ~Property()</B></TT>
+<DD>destructor
+<DL><DT><DD></DL><P>
+<A NAME="getTypeInfo"></A>
+<A NAME="DOC.25.2"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const std::type_info&amp; getTypeInfo() const </B></TT>
+<DD>retrieve the std::type_info RTTI object
+
+<DL><DT><DT><B>Returns:</B><DD>  type_info<BR><DD></DL><P>
+<A NAME="get"></A>
+<A NAME="DOC.25.3"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>template&lt;class Object, class Value&gt;  void get(Value &amp;result, const Object* object) const </B></TT>
+<DD>returns the value of the property
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="TypeMismatchError.html">TypeMismatchError</A></B>  thrown if there is a type mismatch<BR><DT><B>Parameters:</B><DD><B>result</B> -  result to store the value to
+<BR><B>object</B> -  object to <!1><A HREF="Property.2.html#DOC.25.3">get</A> the property of
+<BR><DD></DL><P>
+<A NAME="set"></A>
+<A NAME="DOC.25.4"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>template&lt;class Object, class Value&gt;  void set(Object* object, const Value &amp;value) const </B></TT>
+<DD>sets the property's value
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="TypeMismatchError.html">TypeMismatchError</A></B>  thrown if there is a type mismatch<BR><DT><B>Parameters:</B><DD><B>object</B> -  object to <!1><A HREF="Property.2.html#DOC.25.4">set</A> the property of
+<BR><B>value</B> -  value of the object
+<BR><DD></DL><P></DL>
+
+<HR><DL><DT><B>This class has no child classes.</B></DL>
+
+<DL><DT><DT><B>Friends:</B><DD>  class <!1><A HREF="Class.2.html">Class</A><BR>  struct __register_property__<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I> <I><A HREF="HIER.html">HTML hierarchy of classes</A> or <A HREF="HIERjava.html">Java</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

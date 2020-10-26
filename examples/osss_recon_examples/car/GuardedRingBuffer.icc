@@ -1,0 +1,27 @@
+template< class ElementType , int size >
+void
+GuardedRingBuffer<ElementType, size>::updateStatusInterface()
+{
+  // Tell the outside world if we may receive or
+  // deliver elements.
+  state_if().po_full.write( isFull() );
+  state_if().po_empty.write( isEmpty() );
+}
+
+template< class ElementType , int size >
+bool
+GuardedRingBuffer<ElementType, size>::OSSS_EXPORTED(put(ElementType sample))
+{
+  bool is_full = RingBuffer<ElementType, size>::put(sample);
+  updateStatusInterface();
+  return is_full;
+}
+
+template< class ElementType , int size >
+ElementType
+GuardedRingBuffer<ElementType, size>::OSSS_EXPORTED(get())
+{
+  ElementType return_value = RingBuffer<ElementType, size>::get();
+  updateStatusInterface();
+  return return_value;
+}

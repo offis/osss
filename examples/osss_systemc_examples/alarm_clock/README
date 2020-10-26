@@ -1,0 +1,22 @@
+This example demonstrates the use of normal classes and objects in
+OSSS. A kind of simple alarm clock is modelled with the aid of a
+class Counter. The alarm clock counts clock cycles and raises alarm
+for one clock cycle each time the specifed peridod of time has passed. The
+simulation produces output on stdout as well as a waveform in wif-format,
+showing clock, reset and alarm.
+
+Modelling guidelines for class can be taken from the LRM. The most
+important points are:
+- Do not dynamically allocate and de-allocate memory space.
+- Do not declare members that are pointers.
+- Functions must not return references.
+- Functions must only have const or reference parameters.
+  
+Files:
+main.cc - the testbench
+Counter.* - declaration and implementation of class Counter.
+AlarmClock.* - declaration and implementation of module AlarmClock, that
+  uses and instance of Counter for doing its purposes.
+Makefile - for making the project with GNU make.
+README - this file.
+

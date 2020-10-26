@@ -1,0 +1,579 @@
+<h1>LibReflection</h1>
+<p>Version 0.81 (C) 2004 Achilleas Margaritis</p>
+<h2>Contents</h2>
+<ul>
+  <li><a href="#Introduction">Introduction</a></li>
+  <li><a href="#Using the library">Using the library</a></li>
+  <li><a href="#Declaring reflective classes">Declaring reflective classes</a></li>
+  <li><a href="#Declaring reflective constructor">Declaring reflective constructor</a></li>
+  <li><a href="#Declaring reflective fields">Declaring reflective fields</a></li>
+  <li><a href="#Declaring reflective static fields">Declaring reflective static
+    fields</a></li>
+  <li><a href="#Declaring reflective methods">Declaring reflective methods</a></li>
+  <li><a href="#Declaring reflective virtual methods">Declaring reflective
+    virtual methods</a></li>
+  <li><a href="#Declaring reflective static methods">Declaring reflective static
+    methods</a></li>
+  <li><a href="#Properties">Properties</a></li>
+  <li><a href="#Properties">Declaring properties</a></li>
+  <li><a href="#Implementing properties">Implementing properties</a></li>
+  <li><a href="#Using properties">Using properties</a></li>
+  <li><a href="#Properties and operators">Properties and operators</a></li>
+  <li><a href="#Events">Events</a></li>
+  <li><a href="#The class registry">The class registry</a></li>
+  <li><a href="#Using reflection">Using reflection</a></li>
+  <li><a href="#Retrieving the class">Retrieving the class</a></li>
+  <li><a href="#Examining class members">Examining class members</a></li>
+  <li><a href="#Using members">Using members</a></li>
+  <li><a href="#Setting and getting data members">Setting and getting data
+    members</a></li>
+  <li><a href="#Invoking methods">Invoking methods</a></li>
+  <li><a href="#Dynamic casting">Dynamic object type casting</a></li>
+  <li><a href="#Error handling">Error handling</a></li>
+  <li><a href="#Reference manual">Reference manual</a></li>
+  <li><a href="#Supported platforms">Supported platforms</a></li>
+  <li><a href="#Licence">Licence</a></li>
+  <li><a href="#Downloads">Downloads</a></li>
+  <li><a href="#Installation">Installation</a></li>
+</ul>
+<h2><a name="Introduction">Introduction</a></h2>
+<p>Welcome to LibReflection. LibReflection is a little library (well, a header
+to be specific) that gives reflection capabilities to C++ classes. When we talk
+about reflection, we don't mean just RTTI, but a rich palette of capabilities
+useful in every day programming:</p>
+<ul>
+  <li>specify and examine class inheritance</li>
+  <li>declare and examine normal and static fields</li>
+  <li>declare and examine normal, virtual and static methods</li>
+  <li>declare and use properties and events</li>
+  <li>set and get fields values</li>
+  <li>call methods and get results</li>
+  <li>create instances without having the headers at hand by using a class
+    registry</li>
+</ul>
+<p>And all the above almost happen automatically, with very few macros that the
+programmer has to put in the application's classes...and you also get the added
+benefit of class properties and events, something that is missing from C++.</p>
+<h2><a name="Using the library">Using the library</a></h2>
+<p>Using the library is very easy: just copy the header 'reflection.hpp' in a
+directory of your choice, then put the declaration</p>
+<pre>using namespace agm::reflection;</pre>
+<p>in your program.</p>
+<h2><a name="Declaring reflective classes">Declaring reflective classes</a></h2>
+<p>In order to make a class use reflection, all you have to do is put the
+following macro in the public part of your class header:</p>
+<pre><a href="ref/CLASS.html">CLASS</a>(&lt;class name&gt;, &lt;super class name&gt;)</pre>
+<p>That's it! after you put the above macro in the class, the class gets
+reflection capabilities. If the class has no super class, then the pseudo-class <a href="ref/NullClass.html">NullClass</a>
+should be used in place of the super class. Example:</p>
+<font COLOR="#0000ff">
+<pre>class</font> <font COLOR="#0000ff">Widget</font> {</pre>
+<font COLOR="#0000ff">
+<pre>public</font>:</pre>
+<pre><font COLOR="#a000a0">	CLASS</font>(<font COLOR="#0000ff">Widget</font>, <font COLOR="#0000ff">NullClass</font>);</pre>
+<pre>};</pre>
+<font COLOR="#0000ff">
+<pre>class</font> <font COLOR="#0000ff">Label</font> : <font COLOR="#0000ff">public</font> <font COLOR="#0000ff">Widget</font> {</pre>
+<font COLOR="#0000ff">
+<pre>public</font>:</pre>
+<pre><font COLOR="#a000a0">	CLASS</font>(<font COLOR="#0000ff">Label</font>, <font COLOR="#0000ff">Widget</font>);</pre>
+<pre>};</pre>
+<p>As you can see from the above, there is no special inheritance requirement in
+order to declare a class. There is also nothing that should be written in the
+implementation files.</p>
+<h2><a name="Declaring reflective constructor">Declaring reflective constructors</a></h2>
+<p>Constructor can be reflective and show up in the class declaration.  In order
+to declare a reflective constructor, the following macro is used:</p>
+<pre><a href="ref/CONSTRUCTOR.html">CONSTRUCTOR</a>(&lt;access attribute&gt;, &lt;class name&gt;, &lt;method arguments&gt;)
+<a href="ref/CONSTRUCTOR.html">CONSTRUCTOR</a>0(&lt;access attribute&gt;, &lt;class name&gt;, &lt;method arguments&gt;)
+<a href="ref/CONSTRUCTOR.html">CONSTRUCTOR</a>1(&lt;access attribute&gt;, &lt;class name&gt;, &lt;method arguments&gt;)
+<a href="ref/CONSTRUCTOR.html">CONSTRUCTOR</a>2(&lt;access attribute&gt;, &lt;class name&gt;, &lt;method arguments&gt;)
+...
+<a href="ref/CONSTRUCTOR.html">CONSTRUCTOR</a>20(&lt;access attribute&gt;, &lt;class name&gt;, &lt;method arguments&gt;)</pre>
+
+<pre>When overloading a constructor, a different macro name must be used to avoid name conflict.</pre>
+
+<pre>Here is an example:</pre>
+
+<font COLOR="#0000ff">
+<pre>class</font> <font COLOR="#0000ff">Widget</font> {</pre>
+<font COLOR="#0000ff">
+<pre>public</font>:
+<font COLOR="#a000a0">	CLASS</font>(<font COLOR="#0000ff">Widget</font>, <font COLOR="#0000ff">NullClass</font>);
+<font COLOR="#a000a0">	CONSTRUCTOR</font>(<font COLOR="#0000ff">public</font>, <font color="#808080">Widget</font>, ()) {
+	// default constructor
+	}
+	
+	<font COLOR="#a000a0">CONSTRUCTOR1</font>(<font COLOR="#0000ff">public</font>, Widget, (const Widget&amp; that)) {
+	// copy constructor
+	}
+};</pre>
+
+In the example above, two constructors are defined in the class Widget.&nbsp;
+One of them is a default constructor.&nbsp; When a default constructor is
+defined, the Class's newInstance() method can be invoked to dynamically create
+an instance using the default constructor.
+<h2><a name="Declaring reflective fields">Declaring reflective fields</a></h2>
+<p>A class' data fields can be reflective, i.e. show up in the class
+declaration. In order to declare a reflective data field, the following macro is
+used:</p>
+<pre><a href="ref/FIELD.html">FIELD</a>(&lt;access attribute&gt;, &lt;field type&gt;, &lt;field name&gt;)</pre>
+<p>For example:</p>
+<font COLOR="#0000ff">
+<pre>class</font> <font COLOR="#0000ff">Widget</font> {</pre>
+<font COLOR="#0000ff">
+<pre>public</font>:</pre>
+<pre><font COLOR="#a000a0">	CLASS</font>(<font COLOR="#0000ff">Widget</font>, <font COLOR="#0000ff">NullClass</font>);</pre>
+<font COLOR="#0000ff">
+<pre>private</font>:</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">int</font>, <font COLOR="#808080">m_x</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">int</font>, <font COLOR="#808080">m_y</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">int</font>, <font COLOR="#808080">m_width</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">int</font>, <font COLOR="#808080">m_height</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">bool</font>, <font COLOR="#808080">m_visible</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">bool</font>, <font COLOR="#808080">m_enabled</font>);</pre>
+<pre>};</pre>
+<p>All the above fields of the widget class can now be examined in run-time (as
+we are gonna see later).</p>
+<h2><a name="Declaring reflective static fields">Declaring reflective static fields</a></h2>
+<p>Not only fields but also static fields can be declared as reflective. The
+following macro is used:</p>
+<pre><a href="ref/STATIC_FIELD.html">STATIC_FIELD</a>(&lt;access attribute&gt;, &lt;field type&gt;, &lt;field name&gt;)</pre>
+<p>For example:</p>
+<font COLOR="#0000ff">
+<pre>class</font> <font COLOR="#0000ff">Widget</font> {</pre>
+<font COLOR="#0000ff">
+<pre>public</font>:</pre>
+<pre><font COLOR="#a000a0">	CLASS</font>(<font COLOR="#0000ff">Widget</font>, <font COLOR="#0000ff">NullClass</font>);</pre>
+<pre><font COLOR="#a000a0">	STATIC_FIELD</font>(<font COLOR="#0000ff">public</font>, <font COLOR="#0000ff">const</font> <font COLOR="#0000ff">int</font>, <font COLOR="#808080">version</font>);</pre>
+<font COLOR="#0000ff">
+<pre>private</font>:</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">int</font>, <font COLOR="#808080">m_x</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">int</font>, <font COLOR="#808080">m_y</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">int</font>, <font COLOR="#808080">m_width</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">int</font>, <font COLOR="#808080">m_height</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">bool</font>, <font COLOR="#808080">m_visible</font>);</pre>
+<pre><font COLOR="#a000a0">	FIELD</font>(<font COLOR="#0000ff">private</font>, <font COLOR="#0000ff">bool</font>, <font COLOR="#808080">m_enabled</font>);</pre>
+<pre>};</pre>
+<font COLOR="#0000ff">
+<pre>const</font> <font COLOR="#0000ff">int</font> <font COLOR="#0000ff">Widget</font>::<font COLOR="#808080">version</font> = 1;</pre>
+<h2><a name="Declaring reflective methods">Declaring reflective methods</a></h2>
+<p>Any method can be declared as reflective by using the following macro:</p>
+<pre><a href="ref/METHOD.html">METHOD</a> (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+<a href="ref/METHOD.html">METHOD</a>0 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+<a href="ref/METHOD.html">METHOD</a>1 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+<a href="ref/METHOD.html">METHOD</a>2 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+...
+<a href="ref/METHOD.html">METHOD</a>3 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+</pre>
+<p>The method definition can then follow the method declaration in the header
+file or placed in the implementation file. Methods that have up to 20 parameters
+are supported. Both void and non-void methods can be used.&nbsp;</p>
+<p>Similiar to the way constructor is defined, when overloading a method,
+different METHODx macro must be used.</p>
+<p>Some examples of methods:</p>
+<font COLOR="#0000ff">
+<pre>class</font> <font COLOR="#0000ff">Widget</font> {</pre>
+<font COLOR="#0000ff">
+<pre>public</font>:</pre>
+<pre><font COLOR="#a000a0">	CLASS</font>(<font COLOR="#0000ff">Widget</font>, <font COLOR="#0000ff">NullClass</font>);</pre>
+<pre><font COLOR="#a000a0">	METHOD</font>(<font COLOR="#0000ff">public</font>, <font COLOR="#0000ff">bool</font>, <font COLOR="#808080">add</font>, (<font COLOR="#0000ff">Widget</font> *<font COLOR="#808080">child</font>)) {</pre>
+<pre><font COLOR="#0000ff">		if</font> (<font COLOR="#808080">child</font> == 0) <font COLOR="#0000ff">return</font> <font COLOR="#0000ff">false</font>;</pre>
+<pre><font COLOR="#0000ff">		return</font> <font COLOR="#0000ff">true</font>;</pre>
+<pre>	}</pre>
+<pre>};</pre>
+<p>In the above example, the method 'add' is defined inlined for the example,
+but it could be declared like this:</p>
+<font COLOR="#0000ff">
+<pre>class</font> <font COLOR="#0000ff">Widget</font> {</pre>
+<font COLOR="#0000ff">
+<pre>public</font>:</pre>
+<pre><font COLOR="#a000a0">	CLASS</font>(<font COLOR="#0000ff">Widget</font>, <font COLOR="#0000ff">NullClass</font>);</pre>
+<pre><font COLOR="#a000a0">	METHOD</font>(<font COLOR="#0000ff">public</font>, <font COLOR="#0000ff">bool</font>, <font COLOR="#808080">add</font>, (<font COLOR="#0000ff">Widget</font> *<font COLOR="#808080">child</font>));</pre>
+<pre>};</pre>
+<p>&nbsp;</p>
+<font COLOR="#0000ff">
+<pre>bool</font> <font COLOR="#0000ff">Widget</font>::<font COLOR="#880000">add</font>(<font COLOR="#0000ff">Widget</font> *<font COLOR="#808080">child</font>)</pre>
+<pre>{</pre>
+<pre><font COLOR="#0000ff">	if</font> (<font COLOR="#808080">child</font> == 0) <font COLOR="#0000ff">return</font> <font COLOR="#0000ff">false</font>;</pre>
+<pre><font COLOR="#0000ff">	return</font> <font COLOR="#0000ff">true</font>;</pre>
+<pre>}</pre>
+<h2><a name="Declaring reflective virtual methods">Declaring reflective virtual methods</a></h2>
+<p>A virtual method can be declared by the analogous macro:</p>
+<pre><a href="ref/VIRTUAL_METHOD.html">VIRTUAL_METHOD</a> (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+<a href="ref/VIRTUAL_METHOD.html">VIRTUAL_METHOD</a>0 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+<a href="ref/VIRTUAL_METHOD.html">VIRTUAL_METHOD</a>1 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+<a href="ref/VIRTUAL_METHOD.html">VIRTUAL_METHOD</a>2 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+...
+<a href="ref/VIRTUAL_METHOD.html">VIRTUAL_METHOD</a>20 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+</pre>
+<p>Handling of the virtual method is the same as normal methods, so no example
+will be given.</p>
+<h2><a name="Declaring reflective static methods">Declaring reflective static methods</a></h2>
+<p>Not only normal and virtual methods are reflective, but also static methods!
+The macro to use is:</p>
+<pre><a href="ref/StaticMethod.html">STATIC_METHOD</a> (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+<a href="ref/StaticMethod.html">STATIC_METHOD</a>0 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+<a href="ref/StaticMethod.html">STATIC_METHOD</a>1 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+<a href="ref/StaticMethod.html">STATIC_METHOD</a>2 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+...
+<a href="ref/StaticMethod.html">STATIC_METHOD</a>20 (&lt;access attribute&gt;, &lt;return type&gt;, &lt;method name&gt;, &lt;method arguments&gt;)
+</pre>
+<p>Here is an example:</p>
+<font COLOR="#0000ff">
+<pre>class</font> <font COLOR="#0000ff">Widget</font> {</pre>
+<font COLOR="#0000ff">
+<pre>public</font>:</pre>
+<pre><font COLOR="#a000a0">	CLASS</font>(<font COLOR="#0000ff">Widget</font>, <font COLOR="#0000ff">NullClass</font>);</pre>
+<pre><font COLOR="#a000a0">	STATIC_METHOD</font>(<font COLOR="#0000ff">public</font>, <font COLOR="#0000ff">const</font> <font COLOR="#0000ff">char</font> *, <font COLOR="#808080">get_version_string</font>, ());</pre>
+<pre>};</pre>
+<pre>&nbsp;</pre>
+<font COLOR="#0000ff">
+<pre>const</font> <font COLOR="#0000ff">char</font> *<font COLOR="#0000ff">Widget</font>::<font COLOR="#880000">get_version_string</font>()</pre>
+<pre>{</pre>
+<pre><font COLOR="#0000ff">	return</font> &quot;1.0&quot;;</pre>
+<pre>}</pre>
+<h2><a name="Properties">Properties</a></h2>
+<p>This little library gives you a capability that you may have seen in other
+languages but C++ does not provide: the ability to define properties of a class.
+From the outside, a property appears as a data member. From the inside, special
+private functions are used to retrieve and set a property's values.</p>
+<p>Properties have many advantages:</p>
+<ul>
+  <li>the class API is less cluttered.</li>
+  <li>the user of the class has to simply remember the name of the class.</li>
+  <li>there is no need for naming conventions of get/set methods.</li>
+</ul>
+<p>The implementation of properties in this library is special, and I believe
+that it is a first in the C++ world:</p>
+<ul>
+  <li>properties do not add extra bytes to the class.</li>
+  <li>there is no run-time overhead for using properties.</li>
+  <li>the full range of operators can be used on a property, depending on the
+    property's type.</li>
+  <li>properties appear in the class information.</li>
+</ul>
+<h3><a name="Declaring properties">Declaring properties</a></h3>
+<p>A property of the class is declared with the following macro:</p>
+<pre><a href="ref/PROPERTY.html">PROPERTY</a>(&lt;type&gt;, &lt;name&gt;)</pre>
+<p>Here is an example:</p>
+<font COLOR="#0000ff">
+<pre>class</font> <font COLOR="#0000ff">Widget</font> {</pre>
+<font COLOR="#0000ff">
+<pre>public</font>:</pre>
+<blockquote>
+  <pre><font COLOR="#a000a0">CLASS</font>(<font COLOR="#0000ff">Widget</font>, <font COLOR="#0000ff">NullClass</font>);</pre>
+  <pre><font COLOR="#880000">PROPERTY</font>(<font COLOR="#0000ff">int</font>, <font COLOR="#808080">x</font>);</pre>
+  <pre><font COLOR="#880000">PROPERTY</font>(<font COLOR="#0000ff">int</font>, <font COLOR="#808080">y</font>);</pre>
+  <pre><font COLOR="#880000">PROPERTY</font>(<font COLOR="#0000ff">int</font>, <font COLOR="#808080">width</font>);</pre>
+  <pre><font COLOR="#880000">PROPERTY</font>(<font COLOR="#0000ff">int</font>, <font COLOR="#808080">height</font>);</pre>
+  <pre><font COLOR="#880000">PROPERTY</font>(<font COLOR="#0000ff">bool</font>, visible);</pre>
+  <pre><font COLOR="#880000">PROPERTY</font>(<font COLOR="#0000ff">bool</font>, enabled);</pre>
+</blockquote>
+<pre>};</pre>
+<p>Properties are always public.</p>
+<h3><a name="Implementing properties">Implementing properties</a></h3>
+<p>When a property is declared, the library expects two specific methods to
+exist in the private part of the class. These two methods are for getting the
+value of the property and setting the value of the property. These methods have
+the following syntax:</p>
+<pre>//getter</pre>
+<pre>&lt;type&gt; get_&lt;name&gt; () const</pre>
+<pre>//setter</pre>
+<pre>void set_&lt;name&gt;(&lt;type&gt;)</pre>
+<p>For example, the Widget class above would have the following methods:</p>
+<pre><font COLOR="#0000ff">int</font> <font COLOR="#880000">get_x</font>() <font COLOR="#0000ff">const</font> {</pre>
+<pre><font COLOR="#0000ff">	return</font> <font COLOR="#808080">m_x</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">void</font> <font COLOR="#880000">set_x</font>(<font COLOR="#0000ff">int</font> <font COLOR="#808080">v</font>) {</pre>
+<pre><font COLOR="#808080">	m_x</font> = <font COLOR="#808080">v</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">int</font> <font COLOR="#880000">get_y</font>() <font COLOR="#0000ff">const</font> {</pre>
+<pre><font COLOR="#0000ff">	return</font> <font COLOR="#808080">m_y</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">void</font> <font COLOR="#880000">set_y</font>(<font COLOR="#0000ff">int</font> <font COLOR="#808080">v</font>) {</pre>
+<pre><font COLOR="#808080">	m_y</font> = <font COLOR="#808080">v</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">int</font> <font COLOR="#880000">get_width</font>() <font COLOR="#0000ff">const</font> {</pre>
+<pre><font COLOR="#0000ff">	return</font> <font COLOR="#808080">m_width</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">void</font> <font COLOR="#880000">set_width</font>(<font COLOR="#0000ff">int</font> <font COLOR="#808080">v</font>) {</pre>
+<pre><font COLOR="#808080">	m_width</font> = <font COLOR="#808080">v</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">int</font> <font COLOR="#880000">get_height</font>() <font COLOR="#0000ff">const</font> {</pre>
+<pre><font COLOR="#0000ff">	return</font> <font COLOR="#808080">m_height</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">void</font> <font COLOR="#880000">set_height</font>(<font COLOR="#0000ff">int</font> <font COLOR="#808080">v</font>) {</pre>
+<pre><font COLOR="#808080">	m_height</font> = <font COLOR="#808080">v</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">bool</font> <font COLOR="#880000">get_visible</font>() <font COLOR="#0000ff">const</font> {</pre>
+<pre><font COLOR="#0000ff">	return</font> <font COLOR="#808080">m_visible</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">void</font> <font COLOR="#880000">set_visible</font>(<font COLOR="#0000ff">bool</font> <font COLOR="#808080">v</font>) {</pre>
+<pre><font COLOR="#808080">	m_visible</font> = <font COLOR="#808080">v</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">bool</font> <font COLOR="#880000">get_enabled</font>() <font COLOR="#0000ff">const</font> {</pre>
+<pre><font COLOR="#0000ff">	return</font> <font COLOR="#808080">m_enabled</font>;</pre>
+<pre>}</pre>
+<pre><font COLOR="#0000ff">void</font> <font COLOR="#880000">set_enabled</font>(<font COLOR="#0000ff">bool</font> <font COLOR="#808080">v</font>) {</pre>
+<pre><font COLOR="#808080">	m_enabled</font> = <font COLOR="#808080">v</font>;</pre>
+<pre>}</pre>
+<p>If you wish to provide write-only or read-only properties, then you can throw
+an exception from inside a set/get method.</p>
+<h3><a name="Using properties">Using properties</a></h3>
+<p>Property usage is really really simple: you just use it as if it was a data
+member. For example:</p>
+<font COLOR="#0000ff">
+<pre>int</font> <font COLOR="#880000">main</font>()</pre>
+<pre>{</pre>
+<blockquote>
+  <pre><font COLOR="#0000ff">Widget</font> <font COLOR="#808080">wgt</font>;</pre>
+  <pre><font COLOR="#808080">wgt</font>.<font COLOR="#808080">x</font> = 5;</pre>
+  <pre><font COLOR="#0000ff">int</font> <font COLOR="#808080">x</font> = <font COLOR="#808080">wgt</font>.<font COLOR="#808080">x</font>;</pre>
+  <pre><font COLOR="#808080">wgt</font>.visible = <font COLOR="#0000ff">true</font>;</pre>
+  <pre><font COLOR="#0000ff">bool</font> <font COLOR="#808080">v</font> = <font COLOR="#808080">wgt</font>.visible;</pre>
+  <pre><font COLOR="#808080">cout</font> &lt;&lt; &quot;wgt.x=&quot; &lt;&lt; <font COLOR="#808080">x</font> &lt;&lt; <font COLOR="#808080">endl</font>;</pre>
+  <pre><font COLOR="#808080">cout</font> &lt;&lt; &quot;wgt.visible=&quot; &lt;&lt; <font COLOR="#808080">v</font> &lt;&lt; <font COLOR="#808080">endl</font>;</pre>
+  <pre><font COLOR="#0000ff">return</font> 0;</pre>
+</blockquote>
+<pre>}</pre>
+<p>The above short program will print:</p>
+<pre>wgt.x=5
+wgt.visible=1</pre>
+<h3><a name="Properties and operators">Properties and operators</a></h3>
+<p>C++ operators can be used for each property, according to type. For example:</p>
+<font COLOR="#0000ff">
+<pre>int</font> <font COLOR="#880000">main</font>()</pre>
+<pre>{</pre>
+<blockquote>
+  <pre><font COLOR="#0000ff">Widget</font> <font COLOR="#808080">wgt</font>;</pre>
+  <pre><font COLOR="#808080">wgt</font>.<font COLOR="#808080">x</font> = 5;</pre>
+  <pre><font COLOR="#808080">wgt</font>.<font COLOR="#808080">x</font>++;</pre>
+  <pre><font COLOR="#0000ff">int</font> <font COLOR="#808080">x</font> = <font COLOR="#808080">wgt</font>.<font COLOR="#808080">x</font>;</pre>
+  <pre><font COLOR="#0000ff">bool</font> <font COLOR="#808080">is_6</font> = <font COLOR="#808080">wgt</font>.<font COLOR="#808080">x</font> == 6;</pre>
+  <pre><font COLOR="#808080">cout</font> &lt;&lt; &quot;wgt.x=&quot; &lt;&lt; <font COLOR="#808080">x</font> &lt;&lt; <font COLOR="#808080">endl</font>;</pre>
+  <pre><font COLOR="#808080">cout</font> &lt;&lt; &quot;wgt.x == 6 ? &quot; &lt;&lt; <font COLOR="#808080">is_6</font> &lt;&lt; <font COLOR="#808080">endl</font>;</pre>
+  <pre><font COLOR="#0000ff">return</font> 0;</pre>
+</blockquote>
+<pre>}</pre>
+<p>The above program prints:</p>
+<pre>wgt.x=6
+wgt.x == 6 ? 1</pre>
+<h2><a name="Events">Events</a></h2>
+<p>under construction</p>
+<h2><a name="The class registry">The class registry</a></h2>
+<p>The class registry can be retrieve via the <a href="ref/Class.2.html">Class</a>
+ static method <font color="#0000FF">Class::getClasses()</font> .&nbsp; Or search via
+<font color="#0000FF">Class::forName()</font> static method.&nbsp;
+e.g.</p>
+<pre>
+using namespace agm::reflection;
+
+/* retrieve all class */
+const Class::ClassList &amp; cls_list = Class::getClasses();
+
+/* dump all info */
+for (Class::class_iterator p = cls_list.begin(); p != cls_list.end(); ++p )
+	cout &lt;&lt; *p &lt;&lt; std::endl;
+	
+/* search for Widget */
+const Class * widget_cls = Class::forName(&quot;Widget&quot;);
+
+/* invoke default constructor */
+Widget *w = (Widget *)widget_cls-&gt;newInstance();
+
+delete w;
+
+</pre>
+
+
+
+<h2><a name="Using reflection">Using reflection</a></h2>
+<h3><a name="Retrieving the class">Retrieving the class</a></h3>
+<p>In order to use reflection, we need to have access to the <a href="ref/Class.2.html">Class</a>
+object of a class. This can be achieved in two ways:</p>
+<ol>
+  <li>by calling the method <font color="#0000FF">static const Class
+    &amp;getClassStatic() </font>applied on the class name.</li>
+  <li>by calling the method <font color="#0000FF">const Class &amp;getClass() </font>applied
+    on an instance of the class.</li>
+  <li>by searching thru the registry (see above)</li>
+</ol>
+<p>For example:</p>
+<pre>const Class &amp;widget_class = Widget::getClassStatic();</pre>
+<pre>const Class &amp;widget_class = wgt.getClass();</pre>
+<h3><a name="Examining class members">Examining class members</a></h3>
+<p>Once we get the Class object, we can examine the various members of the class
+by calling one of its methods. For example, in order to examine the class'
+properties, we can do the following, for example:</p>
+<font COLOR="#0000ff">
+<pre>int</font> <font COLOR="#880000">main</font>()</pre>
+<pre>{</pre>
+<blockquote>
+  <pre><font COLOR="#0000ff">Widget</font> <font COLOR="#808080">wgt</font>;</pre>
+  <pre><font COLOR="#0000ff">for</font>(<font COLOR="#0000ff">Class</font>::<font COLOR="#0000ff">PropertyList</font>::<font COLOR="#0000ff">const_iterator</font> <font COLOR="#808080">it</font> = <font COLOR="#808080">wgt</font>.<font COLOR="#880000">getClass</font>().<font COLOR="#880000">getProperties</font>().<font COLOR="#880000">begin</font>();</pre>
+  <pre><font COLOR="#808080">	it</font> != <font COLOR="#808080">wgt</font>.<font COLOR="#880000">getClass</font>().<font COLOR="#880000">getProperties</font>().<font COLOR="#880000">end</font>();</pre>
+  <pre>	++<font COLOR="#808080">it</font>)</pre>
+  <pre>{</pre>
+  <blockquote>
+    <pre><font COLOR="#0000ff">const</font> <font COLOR="#0000ff">Property</font> &amp;<font COLOR="#808080">prop</font> = *<font COLOR="#808080">it</font>;</pre>
+    <pre><font COLOR="#808080">cout</font> &lt;&lt; <font COLOR="#808080">prop</font>.<font COLOR="#880000">getType</font>() &lt;&lt; &quot; &quot; &lt;&lt; <font COLOR="#808080">prop</font>.<font COLOR="#880000">getName</font>() &lt;&lt; <font COLOR="#808080">endl</font>;</pre>
+  </blockquote>
+  <pre>}</pre>
+  <pre><font COLOR="#880000">getchar</font>();</pre>
+  <pre><font COLOR="#0000ff">return</font> 0;</pre>
+</blockquote>
+<pre>}</pre>
+<p>The above loop is an iteration over the list of properties that a class has.
+The same principle applies for other types of members of the class. The library
+uses standard std containers, so it should work with any std-compatible library.</p>
+<p>The class members that can examined are:</p>
+<ul>
+  <li><a href="ref/Field.2.html">Field</a></li>
+  <li><a href="ref/StaticField.html">StaticField</a></li>
+  <li><a href="ref/Method.2.html">Method</a></li>
+  <li><a href="ref/StaticMethod.html">StaticMethod</a></li>
+  <li><a href="ref/Property.2.html">Property</a></li>
+  <li>Event</li>
+</ul>
+<p>All the above are classes that can be used to examine a class' members using
+the available methods.</p>
+<h3><a name="Using members">Using members</a></h3>
+<p>Individual members of a class can be requested by calling one of the Class
+methods passing the member's name. For example, to get the 'width' property of
+the class, one would do the following:</p>
+<font COLOR="#0000ff">
+<pre>int</font> <font COLOR="#880000">main</font>()</pre>
+<pre>{</pre>
+<blockquote>
+  <pre><font COLOR="#0000ff">Widget</font> <font COLOR="#808080">wgt</font>;</pre>
+  <pre><font COLOR="#0000ff">const</font> <font COLOR="#0000ff">Property</font> &amp;<font COLOR="#808080">prop</font> = <font COLOR="#808080">wgt</font>.<font COLOR="#880000">getClass</font>().<font COLOR="#880000">getProperty</font>(&quot;width&quot;);</pre>
+  <pre><font COLOR="#808080">cout</font> &lt;&lt; <font COLOR="#808080">prop</font>.<font COLOR="#880000">getType</font>() &lt;&lt; &quot; &quot; &lt;&lt; <font COLOR="#808080">prop</font>.<font COLOR="#880000">getName</font>() &lt;&lt; <font COLOR="#808080">endl</font>;</pre>
+  <pre><font COLOR="#0000ff">return</font> 0;</pre>
+</blockquote>
+<pre>}</pre>
+<h3><a name="Setting and getting data members">Setting and getting data members</a></h3>
+<p>Data members of a class (fields, static fields, properties) can be set and
+retrieved by using the class! This can be achieved by retrieving the
+field/static field/property from the class, then call the 'set' or 'get' method
+of the class. For example, in order to use the 'width' property of the widget:</p>
+<font COLOR="#0000ff">
+<pre>int</font> <font COLOR="#880000">main</font>()</pre>
+<pre>{</pre>
+<blockquote>
+  <pre><font COLOR="#0000ff">Widget</font> <font COLOR="#808080">wgt</font>;</pre>
+  <pre><font COLOR="#0000ff">const</font> <font COLOR="#0000ff">Property</font> &amp;<font COLOR="#808080">prop</font> = <font COLOR="#808080">wgt</font>.<font COLOR="#880000">getClass</font>().<font COLOR="#880000">getProperty</font>(&quot;width&quot;);</pre>
+  <pre><font COLOR="#808080">cout</font> &lt;&lt; <font COLOR="#808080">prop</font>.<font COLOR="#880000">getType</font>() &lt;&lt; &quot; &quot; &lt;&lt; <font COLOR="#808080">prop</font>.<font COLOR="#880000">getName</font>() &lt;&lt; <font COLOR="#808080">endl</font>;</pre>
+  <pre><font COLOR="#808080">prop</font>.<font COLOR="#880000">set</font>(&amp;<font COLOR="#808080">wgt</font>, 5);</pre>
+  <pre><font COLOR="#0000ff">int</font> <font COLOR="#808080">w</font>;</pre>
+  <pre><font COLOR="#808080">prop</font>.<font COLOR="#880000">get</font>(<font COLOR="#808080">w</font>, &amp;<font COLOR="#808080">wgt</font>);</pre>
+  <pre><font COLOR="#808080">cout</font> &lt;&lt; <font COLOR="#808080">prop</font>.<font COLOR="#880000">getName</font>() &lt;&lt; &quot; = &quot; &lt;&lt; <font COLOR="#808080">w</font> &lt;&lt; <font COLOR="#808080">endl</font>;</pre>
+  <pre><font COLOR="#0000ff">return</font> 0;</pre>
+</blockquote>
+<pre>}</pre>
+<p>The above program produces the following output:</p>
+<pre>int width
+width = 5</pre>
+<p>Other types of members can be retrieved/set in the exact same way. If a data
+member is not available for the object (other to wrong type of class or the
+member being accessible), one of the <a href="ref/IllegalAccessError.html">IllegalAccessError</a>
+/ <a href="ref/TypeMismatchError.html">TypeMismatchError</a> exceptions are
+thrown.</p>
+<h3><a name="Invoking methods">Invoking methods</a></h3>
+<p>Methods can also be invoked by using the <a href="ref/METHOD.html">Method</a>
+object. Methods can be invoked by calling one of the following functions:</p>
+<ul>
+  <li><font color="#0000FF">void invokeVoid(object *, T1, T2, ...TN)</font></li>
+  <li><font color="#0000FF">void invoke(&amp;result, Object, T1, T2, ...TN)</font></li>
+</ul>
+<p>The <b>invokeVoid</b> method calls a method that does not have a result, i.e.
+it is void.</p>
+<p>The <b>invoke</b> method calls a method that stores the result in the <b>result</b>
+variable that is passed to it.</p>
+<p>In order for the invocation to succeed,&nbsp; the types passed in the
+function must match exactly the types of the underlying method. The same
+exceptions are valid for method invocation.</p>
+<p>Here is an example:</p>
+<font COLOR="#0000ff">
+<pre>bool Widget::<font COLOR="#880000">add</font>(Widget *<font COLOR="#808080">child</font>)</pre>
+<pre>{</pre>
+<blockquote>
+  <pre><font COLOR="#808080">cout</font> &lt;&lt; &quot;Added widget of class &quot; &lt;&lt; <font COLOR="#808080">child</font>-&gt;<font COLOR="#880000">getClass</font>().<font COLOR="#880000">getName</font>() &lt;&lt; <font COLOR="#808080">endl</font>;</pre>
+  <pre>if (<font COLOR="#808080">child</font> == 0) return false;</pre>
+  <pre>return true;</pre>
+</blockquote>
+<pre>}</pre>
+<pre>int</font> <font COLOR="#880000">main</font>()</pre>
+<pre>{</pre>
+<blockquote>
+  <pre><font COLOR="#0000ff">Widget</font> <font COLOR="#808080">wgt</font>;</pre>
+  <pre><font COLOR="#0000ff">Label</font> <font COLOR="#808080">lbl</font>;</pre>
+  <pre><font COLOR="#0000ff">bool</font> <font COLOR="#808080">ok</font>;</pre>
+  <pre><font COLOR="#808080">wgt</font>.<font COLOR="#880000">getClass</font>().<font COLOR="#880000">getMethod</font>(&quot;add&quot;).<font COLOR="#880000">invoke</font>(<font COLOR="#808080">ok</font>, &amp;<font COLOR="#808080">wgt</font>, (<font COLOR="#0000ff">Widget</font> *)&amp;<font COLOR="#808080">lbl</font>);</pre>
+  <pre><font COLOR="#0000ff">return</font> 0;</pre>
+</blockquote>
+<pre>}</pre>
+<p>The example above shows that only only a method can be invoked, but
+subclasses are handled properly. The program produces the following output:</p>
+<pre>Added widget of class Label</pre>
+<h3><a name="Dynamic casting">Dynamic object type casting</a></h3>
+<p>Because of the use of template during method invocation, all of the parameter passed into the invoke() or invokeVoid() method of StaticMethod, Constructor, and
+Method are expected to have the exact same signature as the original method declaration.  This requirement is somewhat relaxed with dynamic object casting.</p>
+<p>Dynamic casting works in two aspects -- automatic down casting (similiar to the way compiler down cast) and dynamic_cast&lt;&gt;
+as in c++.</p>
+<p>With automatic down casting, any method that expect a (Base *) or (Base &), the caller can invoke with
+passing parameter as (Derviced *) or (Derviced &).
+for example:</p>
+<p>Suppose a method is defined as:</p>
+<pre>class Derviced: public Base
+{
+	METHOD(public, Derviced*, performThis, (Base *p);
+}
+</pre>
+<p>We can invoke method performThis() using the code below:</p>
+<pre>
+Derviced d;
+Base *bp = &amp;d;
+Base *return_bp;
+
+d.getClass().getMethod(&quot;performThis&quot;).invoke(&amp;return_bp, &amp;d, &amp;d);</pre>
+<p>In this example, both the return pointer and parameter pointer are down casted</p>
+<p>The second form of dynamic object type casting uses dynamic_cast<> c++ operator, the object pointer are automatically test for if the class is of Derviced
+object instance.  For the same example above:</p>
+<pre>
+Derviced d;
+Base *bp = &amp;d;
+Base *return_bp;</pre>
+<pre>
+d.getClass().getMethod(&quot;preformThis&quot;).invoke(&amp;return_bp, <font color="#0000FF">bp</font>, &amp;d);</pre>
+<p>The invoking class object pointer (bp) is dynamic_cast<> from Base *bp to Derviced *</p>
+
+
+<h2><a name="Error handling">Error handling</a></h2>
+<p>The library has a policy regarding errors: it uses exceptions. Instead of
+returning error code values, the following exceptions can be thrown:</p>
+<ul>
+  <li><a href="ref/TypeMismatchError.html">TypeMismatchError</a></li>
+  <li><a href="ref/IllegalAccessError.html">IllegalAccessError</a></li>
+  <li><a href="ref/UnknownFieldError.html">UnknownFieldError</a></li>
+  <li><a href="ref/UnknownMethodError.html">UnknownMethodError</a></li>
+  <li><a href="ref/UnknownPropertyError.html">UnknownPropertyError</a></li>
+  <li><a href="ref/SuperClassError.html">SuperClassError</a></li>
+</ul>
+<h2><a name="Reference manual">Reference manual</a></h2>
+<p>The page <a href="ref/index.html">ref/index.html</a> contains the
+automatically produced reference manual.</p>
+<h2><a name="Supported platforms">Supported platforms</a></h2>
+<p>The library currently works on the following platforms:</p>
+<ul>
+  <li>gcc</li>
+</ul>
+<h2><a name="Licence">Licence</a></h2>
+<p>The licence is LGPL. But if your open source licence is incompatible with
+LPGL, you can still use LibReflection...don't worry.</p>
+<h2><a name="Downloads">Downloads</a></h2>
+<p>&nbsp;</p>
+<h2><a name="Installation">Installation</a></h2>
+<p>Just copy the file 'reflection.hpp' in any place you like. It is in the <b>include</b>
+directory.</p>
+<p>&nbsp;</p>

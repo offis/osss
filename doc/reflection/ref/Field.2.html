@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>class  Field</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.10">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>class  <A HREF="#DOC.DOCU">Field</A></H2></H2><BLOCKQUOTE>The Field class represents an object's field</BLOCKQUOTE>
+<HR>
+
+<H2>Inheritance:</H2>
+<APPLET CODE="ClassGraph.class" WIDTH=600 HEIGHT=65>
+<param name=classes value="CMemberBase,MMemberBase.html,CField,MField.2.html">
+<param name=before value="M,M">
+<param name=after value="Md_,M">
+<param name=indent value="0,1">
+<param name=arrowdir value="down">
+</APPLET>
+<HR>
+
+<DL>
+<P><DL>
+<DT><H3>Public Methods</H3><DD><DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const std::type_info&amp; <B><A HREF="#DOC.20.1">getTypeInfo</A></B>() const 
+<DD><I>return the C++ std::typeinfo RTTI info object </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>template&lt;class Object, class Value&gt;  void <B><A HREF="#DOC.20.2">get</A></B>(Value &amp;result, Object* object) const 
+<DD><I>retrieves the field of the given object </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>template&lt;class Object, class Value&gt;  void <B><A HREF="#DOC.20.3">set</A></B>(Object* object, const Value &amp;value) const 
+<DD><I>sets the field of the given object </I>
+</DL></P>
+
+</DL>
+<HR><H3>Inherited from <A HREF="MemberBase.html">MemberBase</A>:</H3>
+<DL>
+<P><DL>
+<DT><H3>Public Methods</H3><DD><DT>
+<IMG ALT="o" SRC=icon2.gif>inline   const <!1><A HREF="Class.2.html">Class</A>&amp; <B>getClass</B>() const 
+<DT>
+<IMG ALT="o" SRC=icon2.gif>inline   const <!1><A HREF="ACCESS_TYPE.html">ACCESS_TYPE</A> <B>getAccess</B>() const 
+<DT>
+<IMG ALT="o" SRC=icon2.gif>inline   const char* <B>getType</B>() const 
+<DT>
+<IMG ALT="o" SRC=icon2.gif>inline   const char* <B>getName</B>() const 
+</DL></P>
+
+<P><DL>
+<DT><H3>Protected Methods</H3><DD><DT>
+<IMG ALT="o" SRC=icon2.gif>inline   <!1><A HREF="MemberBase.html">MemberBase</A>&amp; <B>operator = </B>(const <!1><A HREF="MemberBase.html">MemberBase</A>&amp; other)
+</DL></P>
+
+</DL>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>The Field class represents an object's field</BLOCKQUOTE>
+<DL>
+
+<A NAME="getTypeInfo"></A>
+<A NAME="DOC.20.1"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const std::type_info&amp; getTypeInfo() const </B></TT>
+<DD>return the C++ std::typeinfo RTTI info object
+
+<DL><DT><DT><B>Returns:</B><DD>  the field's datatype typeinfo.<BR><DD></DL><P>
+<A NAME="get"></A>
+<A NAME="DOC.20.2"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>template&lt;class Object, class Value&gt;  void get(Value &amp;result, Object* object) const </B></TT>
+<DD>retrieves the field of the given object
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="TypeMismatchError.html">TypeMismatchError</A></B>  thrown if the object is of invalid class or 
+the result is of the wrong type.<BR><DT><B>Parameters:</B><DD><B>result</B> -  variable to store the result of the field
+<BR><B>object</B> -  object to <!1><A HREF="Field.2.html#DOC.20.3">set</A> the field of
+<BR><DD></DL><P>
+<A NAME="set"></A>
+<A NAME="DOC.20.3"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>template&lt;class Object, class Value&gt;  void set(Object* object, const Value &amp;value) const </B></TT>
+<DD>sets the field of the given object
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="TypeMismatchError.html">TypeMismatchError</A></B>  thrown if the object is of invalid class or 
+the value is of the wrong type.
+<BR><B><!1><A HREF="IllegalAccessError.html">IllegalAccessError</A></B>  thrown if the field's access is not public.<BR><DT><B>Parameters:</B><DD><B>object</B> -  object to <!1><A HREF="Field.2.html#DOC.20.3">set</A> the field of
+<BR><B>value</B> -  new value of the field
+<BR><DD></DL><P></DL>
+
+<HR><DL><DT><B>This class has no child classes.</B></DL>
+
+<DL><DT><DT><B>Friends:</B><DD>  class <!1><A HREF="Class.2.html">Class</A><BR>  struct __register_field__<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I> <I><A HREF="HIER.html">HTML hierarchy of classes</A> or <A HREF="HIERjava.html">Java</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

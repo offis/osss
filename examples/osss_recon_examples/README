@@ -1,0 +1,32 @@
+This directory contains some benchmarks/examples for the OSSS+R
+library.
+
+Contents:
+
++ Makefile          Makefile to build/clean all examples
+|
++ Makefile.common   Common Makefile for all examples/benchmarks,
+|                   which gets sources within the example specific
+|                   Makefiles. Contains global rules/settings.
++ Makefile.skeleton Skeleton Makefile for new examples.
+|                   Copy to example_dir/Makefile and edit to your needs.
+|
++ audio/            Simple example of an audio decoding application
+|   |               supporting different codecs.
+|   + Makefile
+|   + audio_direct.cpp
+|
++ car/              Simple car entertainment systems
+|   |
+|   + README.txt    See this file for more information regarding this
+|   |               example.
+|   + ...
+|
++ crypto/           Example based on benchmark from FDL'04 paper.
+    |
+    + README.txt    See this file for more information regarding this
+    |               example.
+    + ...
+
+
+

@@ -1,0 +1,92 @@
+The trace from last example (with thrashing) looked like this:
+
+             SystemC 2.1.v1 --- Oct 26 2006 14:48:03
+        Copyright (c) 1996-2005 by all Contributors
+                    ALL RIGHTS RESERVED
+0 s  @ int sc_main(): Starting simulation
+0 s design_under_test.process_two @ process_two(): process two (re-)started
+0 s design_under_test.process_two @ process_two(): Switching to MP3
+0 s design_under_test.process_one @ process_one(): process one (re-)started
+0 s design_under_test.process_one @ process_one(): Switching to MP3
+200130 ns design_under_test.process_one @ process_one(): Decoding MP3
+223260 ns design_under_test.process_two @ process_two(): Decoding MP3
+269420 ns design_under_test.process_one @ decode(): MP3 decode
+279680 ns design_under_test.process_one @ process_one(): Switching to AAC
+325840 ns design_under_test.process_two @ decode(): MP3 decode
+336100 ns design_under_test.process_two @ process_two(): Switching to OGG
+559270 ns design_under_test.process_one @ process_one(): Decoding AAC
+783440 ns design_under_test.process_two @ process_two(): Decoding OGG
+1029640 ns design_under_test.process_one @ decode(): AAC decode
+1039900 ns design_under_test.process_one @ process_one(): Switching to MP3
+1286100 ns design_under_test.process_two @ decode(): OGG decode
+1296360 ns design_under_test.process_two @ process_two(): Switching to MP3
+1518530 ns design_under_test.process_one @ process_one(): Decoding MP3
+1541660 ns design_under_test.process_two @ process_two(): Decoding MP3
+1587820 ns design_under_test.process_one @ decode(): MP3 decode
+1598080 ns design_under_test.process_one @ process_one(): Switching to AAC
+1644240 ns design_under_test.process_two @ decode(): MP3 decode
+1654500 ns design_under_test.process_two @ process_two(): Switching to OGG
+1877670 ns design_under_test.process_one @ process_one(): Decoding AAC
+
+
+Now, we get:
+
+             SystemC 2.1.v1 --- Oct 26 2006 14:48:03
+        Copyright (c) 1996-2005 by all Contributors
+                    ALL RIGHTS RESERVED
+0 s  @ int sc_main(): Starting simulation
+0 s design_under_test.process_two @ process_two(): process two (re-)started
+0 s design_under_test.process_one @ process_one(): process one (re-)started
+10 ns design_under_test.process_two @ process_two(): Switching to MP3
+10 ns design_under_test.process_one @ process_one(): Switching to MP3
+200140 ns design_under_test.process_one @ process_one(): Decoding MP3
+200210 ns design_under_test.process_one @ decode(): MP3 decode
+210490 ns design_under_test.process_one @ process_one(): Switching to AAC
+233600 ns design_under_test.process_two @ process_two(): Decoding MP3
+233670 ns design_under_test.process_two @ decode(): MP3 decode
+243950 ns design_under_test.process_two @ process_two(): Switching to OGG
+467100 ns design_under_test.process_one @ process_one(): Decoding AAC
+467170 ns design_under_test.process_one @ decode(): AAC decode
+477450 ns design_under_test.process_one @ process_one(): Switching to MP3
+701600 ns design_under_test.process_two @ process_two(): Decoding OGG
+701670 ns design_under_test.process_two @ decode(): OGG decode
+711950 ns design_under_test.process_two @ process_two(): Switching to MP3
+934100 ns design_under_test.process_one @ process_one(): Decoding MP3
+934170 ns design_under_test.process_one @ decode(): MP3 decode
+944450 ns design_under_test.process_one @ process_one(): Switching to AAC
+967560 ns design_under_test.process_two @ process_two(): Decoding MP3
+967630 ns design_under_test.process_two @ decode(): MP3 decode
+977910 ns design_under_test.process_two @ process_two(): Switching to OGG
+1201060 ns design_under_test.process_one @ process_one(): Decoding AAC
+1201130 ns design_under_test.process_one @ decode(): AAC decode
+1211410 ns design_under_test.process_one @ process_one(): Switching to MP3
+1435560 ns design_under_test.process_two @ process_two(): Decoding OGG
+1435630 ns design_under_test.process_two @ decode(): OGG decode
+1445910 ns design_under_test.process_two @ process_two(): Switching to MP3
+1668060 ns design_under_test.process_one @ process_one(): Decoding MP3
+1668130 ns design_under_test.process_one @ decode(): MP3 decode
+1678410 ns design_under_test.process_one @ process_one(): Switching to AAC
+1701520 ns design_under_test.process_two @ process_two(): Decoding MP3
+1701590 ns design_under_test.process_two @ decode(): MP3 decode
+1711870 ns design_under_test.process_two @ process_two(): Switching to OGG
+1935020 ns design_under_test.process_one @ process_one(): Decoding AAC
+1935090 ns design_under_test.process_one @ decode(): AAC decode
+1945370 ns design_under_test.process_one @ process_one(): Switching to MP3
+
+
+Now, we see that some events are in a different order. The reason are the
+new OSSS_KEEP_ENABLED() blocks. Entering them includes a communication with
+the reconfigurable object. A tag is attached to it which states: "If this
+context gets enabled while the tag is there, you may not disable it again.".
+As soon as the OSSS_KEEP_ENABLED() block is left, the tag is removed.
+
+This way context switches are inhibited within this block and some
+reconfiguration is avoided. If the programmer decided to do so, all both processes
+may well use a common, keep-enabled-tagged context. The context is not
+exclusively owned by anyone, it just is not pushed away by a different context.
+
+When you compare the times, keep in mind that "process_xyz(): ..." is a
+statement declaring what the process is about to do, when it gets permission.
+But "decode(): XYZ decode()" tells you that decoding is happening right now.
+
+You'll find that the second version is obviously faster...

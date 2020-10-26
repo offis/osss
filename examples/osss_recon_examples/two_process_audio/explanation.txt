@@ -1,0 +1,81 @@
+The trace you see looks like this:
+
+             SystemC 2.1.v1 --- Oct 26 2006 14:48:03
+	             Copyright (c) 1996-2005 by all Contributors
+		                         ALL RIGHTS RESERVED
+					 0 s  @ int sc_main(): Starting simulation
+					 0 s design_under_test.process_two @
+process_two(): process two (re-)started
+0 s design_under_test.process_two @ process_two(): Switching to MP3
+0 s design_under_test.process_one @ process_one(): process one (re-)started
+0 s design_under_test.process_one @ process_one(): Switching to MP3
+200130 ns design_under_test.process_one @ process_one(): Decoding MP3
+223260 ns design_under_test.process_two @ process_two(): Decoding MP3
+269420 ns design_under_test.process_one @ decode(): MP3 decode
+279680 ns design_under_test.process_one @ process_one(): Switching to AAC
+325840 ns design_under_test.process_two @ decode(): MP3 decode
+336100 ns design_under_test.process_two @ process_two(): Switching to OGG
+559270 ns design_under_test.process_one @ process_one(): Decoding AAC
+783440 ns design_under_test.process_two @ process_two(): Decoding OGG
+1029640 ns design_under_test.process_one @ decode(): AAC decode
+1039900 ns design_under_test.process_one @ process_one(): Switching to MP3
+1286100 ns design_under_test.process_two @ decode(): OGG decode
+1296360 ns design_under_test.process_two @ process_two(): Switching to MP3
+1518530 ns design_under_test.process_one @ process_one(): Decoding MP3
+1541660 ns design_under_test.process_two @ process_two(): Decoding MP3
+1587820 ns design_under_test.process_one @ decode(): MP3 decode
+1598080 ns design_under_test.process_one @ process_one(): Switching to AAC
+1644240 ns design_under_test.process_two @ decode(): MP3 decode
+1654500 ns design_under_test.process_two @ process_two(): Switching to OGG
+1877670 ns design_under_test.process_one @ process_one(): Decoding AAC
+
+Left, you see the simulated time. Then you get the process name
+and at (@) which method it currently is. Then there's a message.
+Everything at 0s should be clear -- the processes are started.
+Both decide to switch to MP3 simulataneously.
+
+Then the osss_recon uses its internal scheduler (default is a
+Round Robin one) to decide which request to serve. It apparently
+decides to serve the process one. Look at the time: You see that there
+are 200us and 130ns gone. We told the library to assume 200us for
+reconfiguration:
+
+...
+OSSS_DECLARE_TIME(my_device_type, MP3Player<Memory>,
+                  sc_time(23, SC_US), sc_time(200, SC_US));
+...
+
+
+The 130ns are 13 clock cycles. These are overhead for communication.
+Now "view_of_process_one" is enabled and the reconfigurable area
+contains an MP3 codec. Process one is served with its assignment
+operation. It now prints "Decoding MP3" since thats what it intends
+to do next.
+
+Then we see process two being served at 223,26 us. There was no
+reconfiguration, although we switched from one context to another.
+The difference of 23 us and 130 ns comes from this: 23 us were used
+to copy the attributes of the MP3Player (for process one) object to
+a safe place.
+There were no such attributes in this example -- we just told the
+simulation to assume this. The remaining 130 ns are 13 clock cycles.
+Again, it is communication overhead.
+It is shorter since we needed no reconfiguration. There were less
+things happening internally. Now process two prints this "Decoding MP3",
+too.
+
+At 269,420 us process one is being served again. Remember, we got
+a fair Round Robin scheduler. There are 46,16 us gone. Two times
+23 us for saving the view of process two and restoring that one
+of context one. And the 16 cycles are ... yes, overhead again.
+
+Now the decode() is executed. The scheduler grants permission
+one after another and each time the class to be available
+in the reconfigurable region switches, the reconfigurable object
+consumes the designated amount of time.
+
+This is a fair schedule, but not a very good one. It would be
+wise to avoid this trashing. There are quite some ways of doing
+this, but we skipped it to keep this example simple.
+
+

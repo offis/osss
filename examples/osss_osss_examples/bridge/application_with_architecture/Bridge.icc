@@ -1,0 +1,149 @@
+/*------------------------------------------------------------------------------
+ Copyright (c) 2005 Kuratorium OFFIS e.V., Oldenburg, Germany
+  
+ Name of the Library: OSSS (A library for synthesisable system level models 
+                            in SystemC) 
+
+ Created for Project: ICODES (http://icodes.offis.de)
+
+ Created by: See AUTHORS (file)
+
+ 
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+Contact:
+ Kuratorium OFFIS e.V. (http://offis.de)
+ Escherweg 2
+ D-26121 Oldenburg
+ PHONE: *49 (441) 9722-0
+ FAX: *49 (441) 9722-102
+ -----------------------------------------------------------------------------*/
+
+//#define BRIDGE_DEBUG
+
+Bridge::Bridge() : b_dataready( false ),
+                   m_master_action(false),
+		   b_st( s_idle ),
+		   b_addr_buffer( 0 ),
+		   b_data_buffer( 0 )
+{
+}
+ 
+
+/////////////////////
+// Master
+/////////////////////
+void Bridge::write(sc_uint< 32 > addr, sc_uint< 32 > data)
+{
+#ifdef BRIDGE_DEBUG
+  cout << __PRETTY_FUNCTION__ << endl;
+  cout << "state: " << b_st << endl << endl;
+#endif
+
+  m_master_action = true;
+  b_st = s_write;
+  b_addr_buffer = addr;
+  b_data_buffer = data;
+}
+
+void Bridge::read(sc_uint< 32 > addr)
+{
+#ifdef BRIDGE_DEBUG
+  cout << __PRETTY_FUNCTION__ << endl;
+  cout << "state: " << b_st << endl << endl;
+#endif
+
+  m_master_action = true;
+  b_st = s_read;
+  b_addr_buffer = addr;
+}
+
+sc_uint< 32 > Bridge::readd()
+{
+#ifdef BRIDGE_DEBUG
+  cout << __PRETTY_FUNCTION__ << endl;
+  cout << "state: " << b_st << endl << endl;
+#endif
+
+  m_master_action = true;
+  b_st = s_idle;
+  b_dataready = false;
+  return b_data_buffer;
+}
+
+//////////////////
+// Slave
+//////////////////
+sc_uint< 32 > Bridge::getAddr()
+{
+#ifdef BRIDGE_DEBUG
+  cout << __PRETTY_FUNCTION__ << endl;
+  cout << "state: " << b_st << endl << endl;
+#endif
+
+  m_master_action = false;
+  return b_addr_buffer;
+}
+
+sc_uint< 32 > Bridge::getData()
+{
+#ifdef BRIDGE_DEBUG
+  cout << __PRETTY_FUNCTION__ << endl;
+  cout << "state: " << b_st << endl << endl;
+#endif
+  
+  m_master_action = false;
+  b_st = s_idle;
+  return b_data_buffer;
+}
+
+void Bridge::putData(sc_uint< 32 > data)
+{
+#ifdef BRIDGE_DEBUG
+  cout << __PRETTY_FUNCTION__ << endl;
+  cout << "state: " << b_st << endl << endl;
+#endif
+
+  m_master_action = false;
+  b_data_buffer = data;
+  b_dataready = true;
+}
+
+ActionType Bridge::getAction()
+{
+#ifdef BRIDGE_DEBUG
+  cout << __PRETTY_FUNCTION__ << endl;
+  cout << "state: " << b_st << endl << endl;
+#endif
+
+  if (!m_master_action)
+    return a_idle;
+  else
+  {
+    switch (b_st)
+    {
+      case s_idle :
+	return a_idle;
+      case s_read :
+	return a_read;
+      case s_write :
+	return a_write;
+    }
+  }
+  std::cerr << "Error in " 
+	    << __PRETTY_FUNCTION__
+            << ": " << "invalid action" << std::endl;
+  exit(EXIT_FAILURE);
+}

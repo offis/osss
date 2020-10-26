@@ -1,0 +1,62 @@
++-------------------------------------------------------------------+
+|                     OSSS simulation library                       |
+|                      Copyright information                        |
++-------------------------------------------------------------------+
+
+This package includes the OSSS simulation library, a library
+for synthesisable system level models in SystemC.
+
+If not stated otherwise, files in this package are under the
+Copyright 2005-2008 by
+  OFFIS Institute for Information Technology, Oldenburg,
+  Carl von Ossietzky University of Oldenburg,
+  Germany.
+All rights reserved.
+
+A list of authors and contributors to this package can be
+found in the AUTHORS file.
+
+Files, that are copyright by other sources, contain a copyright
+notice at the beginning, mentioning the copyright holders and
+licensing information, if required.  A summary of the most
+important external components can be found at the end of this
+file.
+
+You may use this package and its contents only according to the
+conditions described in the LICENSE file, which is part of this
+package. If you have not received this file, contact OFFIS
+for further information.
+
+Contact information:
+ OFFIS
+ Institute for Information Technology
+   Escherweg 2
+   D-26121 Oldenburg
+   Germany
+ www  : http://offis.de
+ phone: +49 (441) 9722-0
+ fax  : +49 (441) 9722-102
+
+-----------------------------------------------------------------
+
+External source code contributions, included in this package:
+
+AGM::LibReflection - C++ reflection library
+
+   - Version:   0.8
+   - Copyright: 2004 Achilleas Margaritis
+   - License:   GNU Lesser General Public Library
+   - Directory: src/o3s/extern/reflection
+
+Boost - Collection of C++ utilities
+
+   - Copyright: see source files
+   - License:   Boost Software License
+                (http://www.boost.org/LICENSE_1_0.txt)
+   - Directory: src/o3s/extern/boost
+
+install-sh - install a program, script, or datafile
+
+   - Copyright: 1991 by the Massachusetts Institute of Technology
+   - License:   see source files
+   - File:      build/install-sh

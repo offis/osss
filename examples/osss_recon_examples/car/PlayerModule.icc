@@ -1,0 +1,154 @@
+#include "PlayerModule.h"
+
+// for initialisation
+#include "MP3.h"
+
+template< unsigned int OUTPUT_BUFFER_SIZE >
+void PlayerModule<OUTPUT_BUFFER_SIZE>::fetchEncodedData()
+{
+  while (! eb.isFull())
+  {
+    // request some data
+
+    // await request
+    while (pi_req.read() == false) { wait(); }
+    // read the data
+    eb.put( pi_enc_sample.read() );
+    // acknowledge
+    po_ack.write( true );
+    // await request fall
+    wait();
+    while (pi_req.read() == true) { wait(); }
+    // set back ack
+    po_ack.write( false );
+    wait();
+  }
+}
+
+template< unsigned int OUTPUT_BUFFER_SIZE >
+void PlayerModule<OUTPUT_BUFFER_SIZE>::playbackThread()
+{
+  while (pi_reset.read() == false){wait();}
+  OSSS_MESSAGE(true, "reset high seen");
+  bool first_run = false;
+  po_ack.write(false);
+  wait();
+  while (pi_reset.read() == true) { wait(); }
+  OSSS_MESSAGE(true, "reset low seen, constructing context");
+  // default initialisation
+  codec_context = MP3Codec();
+
+  // uncompressed data
+  RingBuffer< WaveSample, WAVE_BLOCK_SIZE > wb;
+
+  // we put one empty sample into the output_buffer
+  // in order to initialize the status ports
+  // of that buffer.
+  port_to_buffer->put( WaveSample() );
+
+  WaveSample wave_sample;
+
+  while(true)
+  {
+    if (! wb.isEmpty() )
+    {
+      OSSS_MESSAGE(true, "next: put remaining wave samples into music buffer (cont'd)");
+      while (! wb.isEmpty())
+      {
+        WaveSample ws = wb.get();
+        // the args of put() may be avaulated multiple times
+        // therefore they have to be free of side-effects
+        port_to_buffer->put( ws );
+      }
+      OSSS_MESSAGE(true, "I've put all remaining wave samples into music buffer");
+    }
+
+    // await request (stay idle while nothing to do)
+    while (pi_req.read() == false) { wait(); }
+
+    // Before we access the codec_context
+    // make sure we've got something to do.
+    fetchEncodedData();
+    codec_context = eb.peek()->getCodec();
+
+    // we don't want to be disturbed
+    OSSS_MESSAGE(true, "I'd like to enter OSSS_KEEP_ENABLED");
+    unsigned int frame_count;
+
+    OSSS_KEEP_ENABLED( codec_context )
+    {
+      OSSS_MESSAGE(true, "Now entered OSSS_KEEP_ENABLED");
+
+      bool full = false;
+      frame_count = 0;
+      do
+      {
+
+        // fetch one block of encoded data
+        // if we are cycling through the do-while-loop
+        if (!eb.isFull())
+        {
+          fetchEncodedData();
+        }
+
+        // ask the data for the matching decoder
+        OSSS_MESSAGE((frame_count == 0), "next: create decoder");
+        codec_context = eb.peek()->getCodec();
+
+        // feed the data into it
+        OSSS_MESSAGE((frame_count == 0), "next: feed decoder with compressed data");
+        while (! eb.isEmpty())
+        {
+          codec_context->put(eb.get().cast_to_const());
+        }
+
+        // use the decoder
+        OSSS_MESSAGE(first_run, "next: decode");
+        unsigned int available_samples;
+        available_samples = codec_context->decode();
+
+        // fetch the result
+        OSSS_MESSAGE((frame_count == 0), "next: fetch " << available_samples
+                                     << " wave samples from decoder");
+        while (available_samples > 0)
+        {
+          wave_sample = codec_context->grabWave();
+          wb.put(wave_sample);
+          --available_samples;
+        }
+
+        // deliver the data to the buffer
+        OSSS_MESSAGE((frame_count == 0), "next: put wave samples into music buffer");
+        bool first = true;
+        while (! wb.isEmpty() && (!full))
+        {
+          wave_sample = wb.get();
+          // the args of put() may be avaulated multiple times
+          // therefore they have to be free of side-effects
+          full = port_to_buffer->put( wave_sample );
+          OSSS_MESSAGE(first && (frame_count==0), "delivered first sample");
+          first = false;
+        }
+        if (!wb.isEmpty())
+        {
+          if (full)
+          {
+            OSSS_MESSAGE(true, "Transfer to output_buffer paused since target is full");
+          }
+          else
+          {
+            OSSS_MESSAGE(true, "Target (output_buffer) still has some space");
+          }
+        }
+	else
+	{
+	  OSSS_MESSAGE(true, "Frame " << frame_count << " processed");
+	}
+        ++frame_count;
+      }
+      while (   !full // not full == wb was completely transferred to  output_buffer
+             && (pi_req.read() == true)); // another enc. block is waiting
+      OSSS_MESSAGE(true, "now leaving OSSS_KEEP_ENABLED, " << frame_count << " processed");
+    } // OSSS_KEEP_ENABLED
+  }
+}

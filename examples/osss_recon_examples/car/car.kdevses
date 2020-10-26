@@ -1,0 +1,81 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!DOCTYPE KDevPrjSession>
+<KDevPrjSession>
+ <DocsAndViews NumberOfDocuments="20" >
+  <Doc0 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/benchmarks/car/PlayerModule.icc" >
+   <View0 Encoding="" line="109" Type="Source" />
+  </Doc0>
+  <Doc1 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/benchmarks/car/GuardedRingBuffer.icc" >
+   <View0 Encoding="" Type="Source" />
+  </Doc1>
+  <Doc2 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/benchmarks/car/Top.cpp" >
+   <View0 Encoding="" line="183" Type="Source" />
+  </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/benchmarks/car/GuardedRingBuffer.h" >
+   <View0 Encoding="" Type="Source" />
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osss2/include/osss_hw/osss_port_shared.icc" >
+   <View0 Encoding="" Type="Source" />
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osss2/include/osss_hw/osss_socket.icc" >
+   <View0 Encoding="" Type="Source" />
+  </Doc5>
+  <Doc6 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osss2/include/osss_hw/osss_socket.hh" >
+   <View0 Encoding="" Type="Source" />
+  </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osss2/include/osss_hw/osss_port_shared.hh" >
+   <View0 Encoding="" Type="Source" />
+  </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osss2/include/osss_hw/osss_shared.icc" >
+   <View0 Encoding="" Type="Source" />
+  </Doc8>
+  <Doc9 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osss2/include/osss_general/osss_shelter.hh" >
+   <View0 Encoding="" Type="Source" />
+  </Doc9>
+  <Doc10 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osss2/include/osss_general/osss_shelter.icc" >
+   <View0 Encoding="" Type="Source" />
+  </Doc10>
+  <Doc11 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/include/osssr/osss_recon.icc" >
+   <View0 Encoding="" line="42" Type="Source" />
+  </Doc11>
+  <Doc12 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/include/osssr/osss_context.icc" >
+   <View0 Encoding="" line="228" Type="Source" />
+  </Doc12>
+  <Doc13 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/benchmarks/car/SecurityModule.cpp" >
+   <View0 Encoding="" line="0" Type="Source" />
+  </Doc13>
+  <Doc14 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/benchmarks/car/MP3.h" >
+   <View0 Encoding="" Type="Source" />
+  </Doc14>
+  <Doc15 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/benchmarks/car/MixerModule.cpp" >
+   <View0 Encoding="" line="0" Type="Source" />
+  </Doc15>
+  <Doc16 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osss2/include/osss_hw/osss_arbiter_shared.icc" >
+   <View0 Encoding="" Type="Source" />
+  </Doc16>
+  <Doc17 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/benchmarks/car/MixerModule.h" >
+   <View0 Encoding="" line="21" Type="Source" />
+  </Doc17>
+  <Doc18 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/include/osssr/osss_macros.hh" >
+   <View0 Encoding="" line="26" Type="Source" />
+  </Doc18>
+  <Doc19 NumberOfViews="1" URL="file:///home/andreas/PolyDyn/Simulationsbibliothek/osssr/benchmarks/car/Testbench.cpp" >
+   <View0 Encoding="" line="78" Type="Source" />
+  </Doc19>
+ </DocsAndViews>
+ <pluginList>
+  <kdevdebugger>
+   <breakpointList/>
+   <showInternalCommands value="0" />
+  </kdevdebugger>
+  <kdevbookmarks>
+   <bookmarks/>
+  </kdevbookmarks>
+  <kdevvalgrind>
+   <executable path="" params="" />
+   <valgrind path="" params="" />
+   <calltree path="" params="" />
+   <kcachegrind path="" />
+  </kdevvalgrind>
+ </pluginList>
+</KDevPrjSession>

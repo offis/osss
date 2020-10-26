@@ -1,0 +1,121 @@
+#include "RingBuffer.h"
+#include "osss"
+
+#define DEBUG_RING_BUFFER false
+
+template< class ElementType, int size >
+RingBuffer< ElementType, size >::RingBuffer()
+{
+  next_put_index = 0;
+  next_get_index = 0;
+  last_action_was_get = true;
+}
+
+template< class ElementType, int size >
+bool
+RingBuffer< ElementType, size >::put(ElementType sample)
+{
+#ifndef SYNTHESIS
+  if (isFull())
+  {
+    OSSS_MESSAGE( true, "no space left in buffer");
+    exit(EXIT_FAILURE);
+  }
+  OSSS_MESSAGE( DEBUG_RING_BUFFER && (sample == ElementType()),
+                "storing empty sample");
+#endif
+  ring_buffer[next_put_index] = sample;
+  next_put_index = (next_put_index + 1) % size;
+  last_action_was_get = false;
+
+#ifndef SYNTHESIS
+  /*
+  OSSS_MESSAGE(true, "fill=" << ((next_put_index + size - next_get_index) % size)
+                             << "/" << size
+                             << " (next_put=" << next_put_index
+                             << ", next_get=" << next_get_index << ")");
+  */
+  OSSS_MESSAGE( DEBUG_RING_BUFFER && isFull(), "buffer is full now");
+#endif
+  return isFull();
+}
+
+template< class ElementType, int size >
+ElementType
+RingBuffer< ElementType, size >::get()
+{
+#ifndef SYNTHESIS
+  if (isEmpty())
+  {
+    OSSS_MESSAGE( true, "nothing to get in buffer");
+    exit(EXIT_FAILURE);
+  }
+#endif
+  ElementType sample = ring_buffer[next_get_index];
+  next_get_index = (next_get_index + 1) % size;
+  last_action_was_get = true;
+#ifndef SYNTHESIS
+  /*
+  OSSS_MESSAGE(true, "fill=" << (next_put_index + size - next_get_index) % size
+                             << "/" << size
+                             << " (next_put=" << next_put_index
+                             << ", next_get=" << next_get_index << ")");
+  */
+  OSSS_MESSAGE( DEBUG_RING_BUFFER && isEmpty(), "buffer is empty now");
+#endif
+  return sample;
+}
+
+template< class ElementType, int size >
+bool
+RingBuffer< ElementType, size >::isEmpty() const
+{
+#ifndef SYNTHESIS
+  /*
+  cout << "next_put=" << next_put_index
+       << " | next_get=" << next_get_index
+       << " | size=" << size
+       << " | empty=" << (next_put_index == next_get_index)
+       << endl;
+  */
+#endif
+  return (next_put_index == next_get_index) && last_action_was_get;
+}
+
+template< class ElementType, int size >
+bool
+RingBuffer< ElementType, size >::isFull() const
+{
+#ifndef SYNTHESIS
+  /*
+  cout << "next_put=" << next_put_index
+       << " | next_get=" << next_get_index
+       << " | size=" << size
+       << " | empty=" << (next_put_index == next_get_index)
+       << endl;
+  */
+#endif
+  return (next_put_index == next_get_index) && !last_action_was_get;
+}
+
+template< class ElementType, int size >
+ElementType
+RingBuffer< ElementType, size >::peek()
+{
+#ifndef SYNTHESIS
+  if (isEmpty())
+  {
+    OSSS_MESSAGE( true, "nothing to peek in buffer");
+    exit(EXIT_FAILURE);
+  }
+#endif
+  return ring_buffer[next_get_index];
+}
+
+#ifndef SYNTHESIS
+template< class ElementType, int size >
+std::ostream & operator<<(std::ostream & os, const RingBuffer< ElementType, size > & object)
+{
+  return os;
+}
+#endif

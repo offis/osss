@@ -1,0 +1,281 @@
+/* -----------------------------------------------------------------------
+ * Copyright (c) 2005-2008  OFFIS Institute for Information Technology,
+ *                          Carl von Ossietzky University,
+ *                          Oldenburg, Germany
+ * All rights reserved.
+ *
+ * This file is directly or indirectly part of the OSSS simulation
+ * library, a library for synthesisable system level models in
+ * SystemC.
+ *
+ * Created for the projects:
+ *   - ICODES  (1)
+ *   - PolyDyn (2)
+ *   - ANDRES  (3)
+ *
+ * 1) http://icodes.offis.de/
+ * 2) http://ehs.informatik.uni-oldenburg.de/en/research/projects/polydyn/
+ * 3) http://andres.offis.de/
+ *
+ * A list of authors and contributors can be found in the accompanying
+ * AUTHORS file.  For detailed copyright information, please refer
+ * to the COPYING file.
+ *
+ * -----------------------------------------------------------------------
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301,
+ * USA.
+ *
+ * Contact information:
+ *  OFFIS
+ *  Institute for Information Technology
+ *    Escherweg 2
+ *    D-26121 Oldenburg
+ *    Germany
+ *  www  : http://offis.de/
+ *  phone: +49 (441) 9722-0
+ *  fax  : +49 (441) 9722-102
+ * -----------------------------------------------------------------------
+ */
+#ifndef OSSS_HEADER_INCLUDED_
+#define OSSS_HEADER_INCLUDED_
+
+/**
+ * \file osss
+ * \brief main OSSS library header file
+ *
+ * This file is the main header file of the OSSS simulation library.
+ *
+ */
+
+/**
+ * \mainpage
+ *
+ * \authors See AUTHORS file.
+ *
+ * \section introduction Introduction to OSSS
+ *
+ * See <a href="../OSSS_Manual.pdf">OSSS manual (pdf)</a>.
+ *
+ * \todo write some introductory documentation (\ticket{39})
+ *
+ */
+
+#define DEBUG_OSSS_OBJECT  1
+#define OSSS_SIMPLE_GUARDS 1
+
+// general platform include files
+#include "o3s/utils/osss_common.h"
+#include "o3s/utils/osss_systemc.h"
+#include "o3s/utils/osss_tlm.h"
+#include "o3s/utils/osss_hetsc.h"
+
+#include "o3s/utils/osss_report.h"
+#include "o3s/utils/osss_start.h"
+#include "o3s/utils/osss_process_handle.h"
+#include "o3s/utils/osss_global_port_registry.h"
+
+#if !defined(OSSS_BLUE) && !defined(OSSS_GREEN)
+#if !defined(OSSS_INCLUDE_RECON)
+  #warning Please define either OSSS_BLUE (application layer only) or \
+           OSSS_GREEN (application mapped to architecture layer) in your \
+           top-level design (before including osss or osss.h)!
+  #warning Assuming your model is specified on application layer only, for now.
+  #define OSSS_BLUE 1
+#endif
+#endif
+
+#if defined(OSSS_BLUE) && defined(OSSS_GREEN)
+  #warning Defining both OSSS_BLUE (application layer only) and OSSS_GREEN \
+           (application mapped to architecture layer) is illegal!
+  #warning Assuming your model is refined and mapped from the application \
+           to the architecture layer.
+  #undef OSSS_BLUE
+#endif
+
+#include "o3s/utils/osss_macros.h"
+#include "o3s/utils/osss_types.h"
+
+//C++ reflection library
+#include "o3s/extern/reflection/refcls.h"
+
+#include "o3s/communication/osss_port.h"
+#include "o3s/communication/osss_export.h"
+
+// pre-defined schedulers for shared objects
+#include "o3s/algorithms/osss_no_scheduler.h"
+#include "o3s/algorithms/osss_round_robin.h"
+#include "o3s/algorithms/osss_modified_round_robin.h"
+#include "o3s/algorithms/osss_static_priority.h"
+#include "o3s/algorithms/osss_ceiling_priority.h"
+#include "o3s/algorithms/osss_least_recently_used.h"
+
+#if defined(OSSS_INCLUDE_RECON)
+
+// pre-defined schedulers for recon objects
+#include "o3s/algorithms/osss_recon_round_robin.h"
+#include "o3s/algorithms/osss_recon_modified_round_robin.h"
+
+// pre-defined schedulers for device objects
+#include "o3s/algorithms/osss_device_round_robin.h"
+#include "o3s/algorithms/osss_device_modified_round_robin.h"
+
+#endif // OSSS_INCLUDE_RECON
+
+// common for blue, green and recon
+#include "o3s/structural/osss_hw_macros.h"
+
+#if defined(OSSS_BLUE)
+  #include "o3s/structural/app/osss_hw_macros_blue.h"
+#endif
+
+#if defined(OSSS_GREEN)
+  #include "o3s/structural/arch/osss_hw_macros_green.h"
+#endif
+
+// common for blue, green and recon
+#include "o3s/datatypes/osss_array.h"
+#include "o3s/datatypes/osss_vector.h"
+#include "o3s/datatypes/osss_circ_buffer.h"
+
+#include "o3s/datatypes/osss_object.h"
+#include "o3s/datatypes/osss_polymorphic.h"
+
+#include "o3s/structural/app/osss_shared.h"
+#include "o3s/communication/arch/osss_socket.h"
+#include "o3s/communication/app/osss_port_to_shared.h"
+#include "o3s/communication/app/osss_export_shared.h"
+
+// OSSS-Software Task related classes
+#include "o3s/structural/osss_sw_macros.h"
+#include "o3s/structural/app/osss_software_timing.h"
+#include "o3s/structural/app/osss_sw_shared.h"
+#include "o3s/communication/app/osss_sw_shared_port.h"
+#include "o3s/communication/app/osss_sw_port.h"
+
+// do not be too restrictive here since serialisable
+// datatypes should be usable in Application Layer models as well
+#include "o3s/datatypes/osss_serialisable_array.h"
+#include "o3s/datatypes/osss_serialisable_vector.h"
+
+#if defined(OSSS_INCLUDE_RECON)
+// OSSS+R related classes
+#include "o3s/structural/osss_recon_macros.h"
+#include "o3s/datatypes/osss_object.h"
+#include "o3s/structural/app/osss_recon.h"
+#include "o3s/structural/app/osss_clear_helper.h"
+#include "o3s/structural/app/osss_clear_helper_registry.h"
+#include "o3s/structural/arch/system/osss_device.h"
+#include "o3s/algorithms/osss_precise_cycle_count.h"
+#include "o3s/algorithms/osss_first_fit_placer.h"
+
+#include "o3s/utils/osss_log.h"
+
+#endif // OSSS+R
+
+// OSSS MODULE
+#include "o3s/structural/arch/user_defined_hardware/osss_module.h"
+
+// OSSS-Channel related classes
+#include "o3s/communication/arch/osss_channel/osss_channel_fwd.h"
+#include "o3s/communication/arch/osss_channel/osss_channel_macros.h"
+#include "o3s/communication/arch/osss_channel/osss_channel.h"
+
+#include "o3s/communication/arch/osss_channel/osss_controller_if.h"
+#include "o3s/communication/arch/osss_channel/osss_master_slave_if.h"
+#include "o3s/communication/arch/osss_channel/osss_master_if.h"
+
+#include "o3s/communication/arch/osss_channel/osss_vector_port.h"
+#include "o3s/communication/arch/osss_channel/osss_via.h"
+
+// OSSS-RMI (Remote Method Invocation) related classes
+#include "o3s/datatypes/osss_serialisable_wrapper.h"
+#include "o3s/communication/arch/osss_rmi/osss_object_socket.h"
+#include "o3s/communication/arch/osss_rmi/osss_object_stub.h"
+#include "o3s/communication/arch/osss_rmi/osss_rmi_channel.h"
+#include "o3s/communication/arch/osss_rmi/osss_export_rmi.h"
+
+#include "o3s/datatypes/osss_enum.h"
+
+// OSSS VIRTUAL TARGET ARCHITECTURE
+#include "o3s/communication/arch/osss_abstract_basic_channel.h"
+#include "o3s/communication/arch/osss_abstract_channel.h"
+#include "o3s/structural/arch/sw_processor/osss_processor.h"
+#include "o3s/structural/arch/user_defined_hardware/osss_hardware_block.h"
+#include "o3s/structural/arch/memory/osss_memory.h"
+#include "o3s/structural/arch/memory/osss_ram.h"
+#include "o3s/structural/arch/system/osss_system.h"
+
+// OSSS architecture objects
+#include "o3s/communication/arch/osss_simple_point_to_point_channel.h"
+
+#if defined( OSSS_GREEN )
+// TODO: move vendor-specific interconnect to separate library again
+#  if !defined(XILINX_OPB_CHANNEL_CS_ALGORITHM)
+#    define  XILINX_OPB_CHANNEL_CS_ALGORITHM XILINX_OPB_CHANNEL_CS_NONE
+#  endif
+#include "o3s/communication/arch/xilinx_opb_channel.h"
+#endif
+
+// vendor-specific architecture objects
+// TODO: make this more flexible
+
+// Xilinx architecture objects
+#if defined( OSSS_INCLUDE_XILINX )
+
+#  include "o3s/structural/arch/sw_processor/xilinx_microblaze.h"
+#  include "o3s/structural/arch/memory/xilinx_blockram.h"
+#  include "o3s/structural/arch/memory/xilinx_external_memory.h"
+#  include "o3s/structural/arch/interconnection/xilinx_opb_hardware_block.h"
+#  include "o3s/structural/arch/system/xilinx_system.h"
+
+#endif /* Xilinx  */
+
+// ARM architecture objects
+#if defined( OSSS_INCLUDE_ARM )
+#  include "o3s/communication/arch/arm_ahb_channel.h"
+#endif /* ARM */
+
+#if defined( OSSS_INCLUDE_ELAB )
+#  include "o3s/utils/osss_graph_elaborator.h"
+#  include "o3s/utils/osss_print_elaborator.h"
+#  include "o3s/utils/osss_aci_elaborator.h"
+#endif
+
+#if defined( OSSS_GREEN ) || defined( OSSS_BLUE )
+// OSSS library pre-defined communication objects
+#  include "o3s/communication/predefined/osss_fifo.h"
+#  include "o3s/communication/predefined/osss_fifo_stub.h"
+#  include "o3s/communication/predefined/osss_fifo_adapter.h"
+#endif
+
+// OSSS library pre-defined design patterns
+#if defined( OSSS_INCLUDE_MEDIATOR )
+#  include "o3s/pattern/osss_mediator_initiator_if.h"
+#  include "o3s/pattern/osss_mediator_initiator_stub.h"
+#  include "o3s/pattern/osss_mediator_target_if.h"
+#  include "o3s/pattern/osss_mediator_target_stub.h"
+#  include "o3s/pattern/osss_mediator_types.h"
+#  include "o3s/pattern/osss_mediator_so.h"
+#  include "o3s/pattern/osss_mediator_transactor.h"
+#endif
+
+// drop unneeded preprocessor constants
+#include "o3s/utils/osss_macros_undef.h"
+
+#endif /* OSSS_HEADER_INCLUDED_ */
+
+// $Id: osss 3082 2009-03-27 13:10:54Z philipph $
+// :flavour:(all,h)

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>#define PROPERTY</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.10">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>#define <A HREF="#DOC.DOCU">PROPERTY</A></H2><H2>(TYPE,  NAME)</H2><BLOCKQUOTE>The PROPERTY macro is used to declare an object's property.</BLOCKQUOTE>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>The PROPERTY macro is used to declare an object's property. When used,
+the class must have two private methods in the form of TYPE get()/void set(TYPE)
+for setting and getting the property. By using this macro, the object 
+gets a property interface for managing the value is if it was a field.
+Arithmetic and other operators work as expected. The defined property
+is reflected: it can be examined and set in run-time. Properties do
+not define an access attribute: there are always public. The property
+does not add any extra bytes to the class, besides those needed for reflection.
+</BLOCKQUOTE>
+<DL><DT><DT><B>Parameters:</B><DD><B>TYPE</B> -  type of the property
+<BR><B>NAME</B> -  name of the property<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I> <I><A HREF="HIER.html">HTML hierarchy of classes</A> or <A HREF="HIERjava.html">Java</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

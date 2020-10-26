@@ -1,0 +1,490 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<HEAD>
+   <TITLE>class  Class</TITLE>
+   <META NAME="GENERATOR" CONTENT="DOC++ 3.4.10">
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+
+<H2>class  <A HREF="#DOC.DOCU">Class</A></H2></H2><BLOCKQUOTE>The Class class is used as a placeholder for run-time information of an an object's class.</BLOCKQUOTE>
+<HR>
+
+<DL>
+<P><DL>
+<DT><H3>Public Methods</H3><DD><DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  void* <B><A HREF="#DOC.26.12">(*_new_instance_fun)</A></B>()
+<DD><I>function pointer type to newInstance invocation</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  void* <B><A HREF="#DOC.26.13">(*_super_cast_fun)</A></B>(void* )
+<DD><I>function pointer type to dynamic cast</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const char* <B><A HREF="#DOC.26.14">getName</A></B>() const 
+<DD><I>returns the class name </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const std::string&amp; <B><A HREF="#DOC.26.15">getFullName</A></B>() const 
+<DD><I>returns the full class name including namespace, if any </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const bool <B><A HREF="#DOC.26.16">hasSuper</A></B>() const 
+<DD><I>checks if the class has a superclass </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const <!1><A HREF="Class.2.html">Class</A>&amp; <B><A HREF="#DOC.26.17">getSuper</A></B>() const  throw(<!1><A HREF="SuperClassError.html">SuperClassError</A>)
+<DD><I>returns the superclass of the class </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const <!1><A HREF="Class.2.html#DOC.26.1">FieldList</A>&amp; <B><A HREF="#DOC.26.18">getFields</A></B>() const 
+<DD><I>returns the collection of fields </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const <!1><A HREF="Class.2.html#DOC.26.2">StaticFieldList</A>&amp; <B><A HREF="#DOC.26.19">getStaticFields</A></B>() const 
+<DD><I>returns the collection of static fields </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const <!1><A HREF="Class.2.html#DOC.26.3">MethodList</A>&amp; <B><A HREF="#DOC.26.20">getMethods</A></B>() const 
+<DD><I>returns the list of methods </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const <!1><A HREF="Class.2.html#DOC.26.4">StaticMethodList</A>&amp; <B><A HREF="#DOC.26.21">getStaticMethods</A></B>() const 
+<DD><I>returns the collection of static methods </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const <!1><A HREF="Class.2.html#DOC.26.6">PropertyList</A>&amp; <B><A HREF="#DOC.26.22">getProperties</A></B>() const 
+<DD><I>returns the collection of properties </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>bool <B><A HREF="#DOC.26.23">isBase</A></B>(const <!1><A HREF="Class.2.html">Class</A> &amp;cl) const 
+<DD><I>checks if this class is a base class of the given class </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   size_t <B><A HREF="#DOC.26.24">getSize</A></B>() const 
+<DD><I>return the sizeof the class instance </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   bool <B><A HREF="#DOC.26.25">isSuper</A></B>(const <!1><A HREF="Class.2.html">Class</A> &amp;cl) const 
+<DD><I>checks if this class is the super class of the given class </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   bool <B><A HREF="#DOC.26.26">isSame</A></B>(const <!1><A HREF="Class.2.html">Class</A> &amp;cl) const 
+<DD><I>checks if this class is the same as given class </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const bool <B><A HREF="#DOC.26.27">hasNewInstance</A></B>() const 
+<DD><I>checks if the class has a newInstance method defined </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>void* <B><A HREF="#DOC.26.28">newInstance</A></B>() const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)
+<DD><I>create a instance </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>bool <B><A HREF="#DOC.26.29">isRelative</A></B>(const <!1><A HREF="Class.2.html">Class</A> &amp;cl) const 
+<DD><I>checks if the given class is relative to this class.</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>const <!1><A HREF="Field.2.html">Field</A>&amp; <B><A HREF="#DOC.26.30">getField</A></B>(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownFieldError.html">UnknownFieldError</A>)
+<DD><I>returns field from name </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>const <!1><A HREF="StaticField.html">StaticField</A>&amp; <B><A HREF="#DOC.26.31">getStaticField</A></B>(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownFieldError.html">UnknownFieldError</A>)
+<DD><I>returns static field from name </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>const <!1><A HREF="Method.2.html">Method</A>&amp; <B><A HREF="#DOC.26.32">getMethod</A></B>(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)
+<DD><I>returns method from name </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif><!1><A HREF="Class.2.html#DOC.26.8">MethodVector</A> <B><A HREF="#DOC.26.33">getAllMethods</A></B>(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)
+<DD><I>returns list of method that matches the name </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>const <!1><A HREF="StaticMethod.html">StaticMethod</A>&amp; <B><A HREF="#DOC.26.34">getStaticMethod</A></B>(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)
+<DD><I>returns static method from name </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif><!1><A HREF="Class.2.html#DOC.26.9">StaticMethodVector</A> <B><A HREF="#DOC.26.35">getAllStaticMethods</A></B>(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)
+<DD><I>returns list of static method that matches the name </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>const <!1><A HREF="Class.2.html#DOC.26.5">ConstructorList</A>&amp; <B><A HREF="#DOC.26.36">getConstructors</A></B>() const 
+<DD><I>returns constructor method from name </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>bool <B><A HREF="#DOC.26.37">hasDefaultConstructor</A></B>() const 
+<DD><I>determine if default constructor and newInstance() can be called </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>const <!1><A HREF="ConstructorMethod.html">ConstructorMethod</A>&amp; <B><A HREF="#DOC.26.38">getDefaultConstructor</A></B>() const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)
+<DD><I>return the default constructor </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>const <!1><A HREF="Property.2.html">Property</A>&amp; <B><A HREF="#DOC.26.39">getProperty</A></B>(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownPropertyError.html">UnknownPropertyError</A>)
+<DD><I>returns property from name </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const std::type_info&amp; <B><A HREF="#DOC.26.40">getTypeInfo</A></B>() const 
+<DD><I>return the RTTI std::type_info object for this class </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const std::type_info&amp; <B><A HREF="#DOC.26.41">getPtrTypeInfo</A></B>() const 
+<DD><I>return the RTTI std::type_info object representing a ptr to this class </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline static   const <!1><A HREF="Class.2.html">Class</A>* <B><A HREF="#DOC.26.42">forName</A></B>(const std::string&amp; name)
+<DD><I>search and found the class based on name.</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline static   const <!1><A HREF="Class.2.html#DOC.26.7">ClassList</A>&amp; <B><A HREF="#DOC.26.43">getClasses</A></B>()
+<DD><I>return the entire class registry list </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   void* <B><A HREF="#DOC.26.44">dynamicCastFromSuper</A></B>(void* p) const 
+<DD><I>attempt to dynamically cast a pointer which is the super class object </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   const void* <B><A HREF="#DOC.26.45">dynamicCastFromSuperConst</A></B>(const void* p) const 
+<DD><I>attempt to dynamically cast a const pointer which is the super class object </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   bool <B><A HREF="#DOC.26.46">dynamicCastableFromSuper</A></B>(void* super_ptr, const <!1><A HREF="Class.2.html">Class</A>* super) const 
+<DD><I>determine whether dynamically cast a pointer which is the super class object </I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>inline   bool <B><A HREF="#DOC.26.47">dynamicCastableFromSuper</A></B>(const void* super_ptr, const <!1><A HREF="Class.2.html">Class</A>* super) const 
+<DD><I>determine whether dynamically cast a const pointer which is the super class object </I>
+</DL></P>
+
+<P><DL>
+<DT><H3>Public Members</H3><DD><DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::list&lt;<!1><A HREF="Field.2.html">Field</A>&gt; <B><A HREF="#DOC.26.1">FieldList</A></B>
+<DD><I>type of list of fields</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::list&lt;<!1><A HREF="StaticField.html">StaticField</A>&gt; <B><A HREF="#DOC.26.2">StaticFieldList</A></B>
+<DD><I>type of list of static fields</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::list&lt;<!1><A HREF="Method.2.html">Method</A>&gt; <B><A HREF="#DOC.26.3">MethodList</A></B>
+<DD><I>type of list of methods</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::list&lt;<!1><A HREF="StaticMethod.html">StaticMethod</A>&gt; <B><A HREF="#DOC.26.4">StaticMethodList</A></B>
+<DD><I>type of list of static methods</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::list&lt;<!1><A HREF="ConstructorMethod.html">ConstructorMethod</A>&gt; <B><A HREF="#DOC.26.5">ConstructorList</A></B>
+<DD><I>type of list of constructor methods</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::list&lt;<!1><A HREF="Property.2.html">Property</A>&gt; <B><A HREF="#DOC.26.6">PropertyList</A></B>
+<DD><I>type of list of properties</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::list&lt;<!1><A HREF="Class.2.html">Class</A> *&gt; <B><A HREF="#DOC.26.7">ClassList</A></B>
+<DD><I>type of list of properties</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::vector&lt;const <!1><A HREF="Method.2.html">Method</A> *&gt; <B><A HREF="#DOC.26.8">MethodVector</A></B>
+<DD><I>type of list of all method</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::vector&lt;const <!1><A HREF="StaticMethod.html">StaticMethod</A> *&gt; <B><A HREF="#DOC.26.9">StaticMethodVector</A></B>
+<DD><I>type of list of properties</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  std::map&lt;std::string, <!1><A HREF="Class.2.html">Class</A> *&gt; <B><A HREF="#DOC.26.10">ClassMap</A></B>
+<DD><I>type of class registry name</I>
+<DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>typedef  ClassList::const_iterator <B><A HREF="#DOC.26.11">class_iterator</A></B>
+<DD><I>type of iterator</I>
+</DL></P>
+
+<P><DL>
+<DT><H3>Protected Methods</H3><DD><DT>
+<IMG ALT="[more]" BORDER=0 SRC=icon1.gif>const <!1><A HREF="ConstructorMethod.html">ConstructorMethod</A>* <B><A HREF="#DOC.26.48">defaultConstructor</A></B>() const 
+<DD><I>find default constructor </I>
+</DL></P>
+
+</DL>
+
+<A NAME="DOC.DOCU"></A>
+<HR>
+<H2>Documentation</H2>
+<BLOCKQUOTE>The Class class is used as a placeholder for run-time information of an
+an object's class. A class can be used to query an object's fields, 
+methods, properties, events and super class.</BLOCKQUOTE>
+<DL>
+
+<A NAME="FieldList"></A>
+<A NAME="DOC.26.1"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::list&lt;<!1><A HREF="Field.2.html">Field</A>&gt; FieldList</B></TT>
+<DD>type of list of fields
+<DL><DT><DD></DL><P>
+<A NAME="StaticFieldList"></A>
+<A NAME="DOC.26.2"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::list&lt;<!1><A HREF="StaticField.html">StaticField</A>&gt; StaticFieldList</B></TT>
+<DD>type of list of static fields
+<DL><DT><DD></DL><P>
+<A NAME="MethodList"></A>
+<A NAME="DOC.26.3"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::list&lt;<!1><A HREF="Method.2.html">Method</A>&gt; MethodList</B></TT>
+<DD>type of list of methods
+<DL><DT><DD></DL><P>
+<A NAME="StaticMethodList"></A>
+<A NAME="DOC.26.4"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::list&lt;<!1><A HREF="StaticMethod.html">StaticMethod</A>&gt; StaticMethodList</B></TT>
+<DD>type of list of static methods
+<DL><DT><DD></DL><P>
+<A NAME="ConstructorList"></A>
+<A NAME="DOC.26.5"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::list&lt;<!1><A HREF="ConstructorMethod.html">ConstructorMethod</A>&gt; ConstructorList</B></TT>
+<DD>type of list of constructor methods
+<DL><DT><DD></DL><P>
+<A NAME="PropertyList"></A>
+<A NAME="DOC.26.6"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::list&lt;<!1><A HREF="Property.2.html">Property</A>&gt; PropertyList</B></TT>
+<DD>type of list of properties
+<DL><DT><DD></DL><P>
+<A NAME="ClassList"></A>
+<A NAME="DOC.26.7"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::list&lt;<!1><A HREF="Class.2.html">Class</A> *&gt; ClassList</B></TT>
+<DD>type of list of properties
+<DL><DT><DD></DL><P>
+<A NAME="MethodVector"></A>
+<A NAME="DOC.26.8"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::vector&lt;const <!1><A HREF="Method.2.html">Method</A> *&gt; MethodVector</B></TT>
+<DD>type of list of all method
+<DL><DT><DD></DL><P>
+<A NAME="StaticMethodVector"></A>
+<A NAME="DOC.26.9"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::vector&lt;const <!1><A HREF="StaticMethod.html">StaticMethod</A> *&gt; StaticMethodVector</B></TT>
+<DD>type of list of properties
+<DL><DT><DD></DL><P>
+<A NAME="ClassMap"></A>
+<A NAME="DOC.26.10"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  std::map&lt;std::string, <!1><A HREF="Class.2.html">Class</A> *&gt; ClassMap</B></TT>
+<DD>type of class registry name
+<DL><DT><DD></DL><P>
+<A NAME="class_iterator"></A>
+<A NAME="DOC.26.11"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  ClassList::const_iterator class_iterator</B></TT>
+<DD>type of iterator
+<DL><DT><DD></DL><P>
+<A NAME="(*_new_instance_fun)"></A>
+<A NAME="DOC.26.12"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  void* (*_new_instance_fun)()</B></TT>
+<DD>function pointer type to newInstance invocation
+<DL><DT><DD></DL><P>
+<A NAME="(*_super_cast_fun)"></A>
+<A NAME="DOC.26.13"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>typedef  void* (*_super_cast_fun)(void* )</B></TT>
+<DD>function pointer type to dynamic cast
+<DL><DT><DD></DL><P>
+<A NAME="getName"></A>
+<A NAME="DOC.26.14"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const char* getName() const </B></TT>
+<DD>returns the class name
+
+<DL><DT><DT><B>Returns:</B><DD>  the class name<BR><DD></DL><P>
+<A NAME="getFullName"></A>
+<A NAME="DOC.26.15"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const std::string&amp; getFullName() const </B></TT>
+<DD>returns the full class name including namespace, if any
+
+<DL><DT><DT><B>Returns:</B><DD>  the class name<BR><DD></DL><P>
+<A NAME="hasSuper"></A>
+<A NAME="DOC.26.16"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const bool hasSuper() const </B></TT>
+<DD>checks if the class has a superclass
+
+<DL><DT><DT><B>Returns:</B><DD>  true if the class has a superclass<BR><DD></DL><P>
+<A NAME="getSuper"></A>
+<A NAME="DOC.26.17"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const <!1><A HREF="Class.2.html">Class</A>&amp; getSuper() const  throw(<!1><A HREF="SuperClassError.html">SuperClassError</A>)</B></TT>
+<DD>returns the superclass of the class
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="SuperClassError.html">SuperClassError</A></B>  thrown if there is no super class<BR><DT><B>Returns:</B><DD>  the superclass of the class; the superclass must not be null
+<BR><DD></DL><P>
+<A NAME="getFields"></A>
+<A NAME="DOC.26.18"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const <!1><A HREF="Class.2.html#DOC.26.1">FieldList</A>&amp; getFields() const </B></TT>
+<DD>returns the collection of fields
+
+<DL><DT><DT><B>Returns:</B><DD>  the collection of fields<BR><DD></DL><P>
+<A NAME="getStaticFields"></A>
+<A NAME="DOC.26.19"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const <!1><A HREF="Class.2.html#DOC.26.2">StaticFieldList</A>&amp; getStaticFields() const </B></TT>
+<DD>returns the collection of static fields
+
+<DL><DT><DT><B>Returns:</B><DD>  the collection of static fields<BR><DD></DL><P>
+<A NAME="getMethods"></A>
+<A NAME="DOC.26.20"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const <!1><A HREF="Class.2.html#DOC.26.3">MethodList</A>&amp; getMethods() const </B></TT>
+<DD>returns the list of methods
+
+<DL><DT><DT><B>Returns:</B><DD>  the list of methods<BR><DD></DL><P>
+<A NAME="getStaticMethods"></A>
+<A NAME="DOC.26.21"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const <!1><A HREF="Class.2.html#DOC.26.4">StaticMethodList</A>&amp; getStaticMethods() const </B></TT>
+<DD>returns the collection of static methods
+
+<DL><DT><DT><B>Returns:</B><DD>  the collection of static methods<BR><DD></DL><P>
+<A NAME="getProperties"></A>
+<A NAME="DOC.26.22"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const <!1><A HREF="Class.2.html#DOC.26.6">PropertyList</A>&amp; getProperties() const </B></TT>
+<DD>returns the collection of properties
+
+<DL><DT><DT><B>Returns:</B><DD>  the collection of properties<BR><DD></DL><P>
+<A NAME="isBase"></A>
+<A NAME="DOC.26.23"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>bool isBase(const <!1><A HREF="Class.2.html">Class</A> &amp;cl) const </B></TT>
+<DD>checks if this class is a base class of the given class
+
+<DL><DT><DT><B>Parameters:</B><DD><B>cl</B> -  class to check against
+<BR><DT><B>Returns:</B><DD>  true if this class is a base class of the given class.<BR><DD></DL><P>
+<A NAME="getSize"></A>
+<A NAME="DOC.26.24"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   size_t getSize() const </B></TT>
+<DD>return the sizeof the class instance
+
+<DL><DT><DT><B>Returns:</B><DD>  class object size<BR><DD></DL><P>
+<A NAME="isSuper"></A>
+<A NAME="DOC.26.25"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   bool isSuper(const <!1><A HREF="Class.2.html">Class</A> &amp;cl) const </B></TT>
+<DD>checks if this class is the super class of the given class
+
+<DL><DT><DT><B>Parameters:</B><DD><B>cl</B> -  class to check against
+<BR><DT><B>Returns:</B><DD>  true if this class is the super class of the given class.<BR><DD></DL><P>
+<A NAME="isSame"></A>
+<A NAME="DOC.26.26"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   bool isSame(const <!1><A HREF="Class.2.html">Class</A> &amp;cl) const </B></TT>
+<DD>checks if this class is the same as given class
+
+<DL><DT><DT><B>Parameters:</B><DD><B>cl</B> -  class to check against<BR><DD></DL><P>
+<A NAME="hasNewInstance"></A>
+<A NAME="DOC.26.27"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const bool hasNewInstance() const </B></TT>
+<DD>checks if the class has a newInstance method defined
+
+<DL><DT><DT><B>Returns:</B><DD>  true if the class newInstance method<BR><DD></DL><P>
+<A NAME="newInstance"></A>
+<A NAME="DOC.26.28"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>void* newInstance() const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)</B></TT>
+<DD>create a instance
+
+<DL><DT><DT><B>Parameters:</B><DD><B>cl</B> -  class to check against<BR><DD></DL><P>
+<A NAME="isRelative"></A>
+<A NAME="DOC.26.29"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>bool isRelative(const <!1><A HREF="Class.2.html">Class</A> &amp;cl) const </B></TT>
+<DD>checks if the given class is relative to this class. In other words,
+it checks if this class is a base class of the given class, or if they
+are the same class or the given class is a base class of this class.
+
+<DL><DT><DT><B>Parameters:</B><DD><B>cl</B> -  class to check against
+<BR><DT><B>Returns:</B><DD>  true if this class is a base class of the given class or the
+same class.<BR><DD></DL><P>
+<A NAME="getField"></A>
+<A NAME="DOC.26.30"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>const <!1><A HREF="Field.2.html">Field</A>&amp; getField(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownFieldError.html">UnknownFieldError</A>)</B></TT>
+<DD>returns field from name
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="UnknownFieldError.html">UnknownFieldError</A></B> <BR><DT><B>Parameters:</B><DD><B>name</B> -  name of the field to search for
+<BR><B>searchSuper</B> -  if true, super classes are searched if this class does not have the requested member
+<BR><DT><B>Returns:</B><DD>  the field of given name
+<BR><DD></DL><P>
+<A NAME="getStaticField"></A>
+<A NAME="DOC.26.31"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>const <!1><A HREF="StaticField.html">StaticField</A>&amp; getStaticField(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownFieldError.html">UnknownFieldError</A>)</B></TT>
+<DD>returns static field from name
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="UnknownFieldError.html">UnknownFieldError</A></B> <BR><DT><B>Parameters:</B><DD><B>name</B> -  name of the field to search for
+<BR><B>searchSuper</B> -  if true, super classes are searched if this class does not have the requested member
+<BR><DT><B>Returns:</B><DD>  the field of given name
+<BR><DD></DL><P>
+<A NAME="getMethod"></A>
+<A NAME="DOC.26.32"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>const <!1><A HREF="Method.2.html">Method</A>&amp; getMethod(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)</B></TT>
+<DD>returns method from name
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="UnknownMethodError.html">UnknownMethodError</A></B> <BR><DT><B>Parameters:</B><DD><B>name</B> -  name of the method to search for
+<BR><B>searchSuper</B> -  if true, super classes are searched if this class does not have the requested member
+<BR><DT><B>Returns:</B><DD>  the method of given id
+<BR><DD></DL><P>
+<A NAME="getAllMethods"></A>
+<A NAME="DOC.26.33"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B><!1><A HREF="Class.2.html#DOC.26.8">MethodVector</A> getAllMethods(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)</B></TT>
+<DD>returns list of method that matches the name
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="UnknownMethodError.html">UnknownMethodError</A></B> <BR><DT><B>Parameters:</B><DD><B>name</B> -  name of the method to search for
+<BR><B>searchSuper</B> -  if true, super classes are searched if this class does not have the requested member
+<BR><DT><B>Returns:</B><DD>  the method list of given id
+<BR><DD></DL><P>
+<A NAME="getStaticMethod"></A>
+<A NAME="DOC.26.34"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>const <!1><A HREF="StaticMethod.html">StaticMethod</A>&amp; getStaticMethod(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)</B></TT>
+<DD>returns static method from name
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="UnknownMethodError.html">UnknownMethodError</A></B> <BR><DT><B>Parameters:</B><DD><B>name</B> -  name of the method to search for
+<BR><B>searchSuper</B> -  if true, super classes are searched if this class does not have the requested member
+<BR><DT><B>Returns:</B><DD>  the method of given name
+<BR><DD></DL><P>
+<A NAME="getAllStaticMethods"></A>
+<A NAME="DOC.26.35"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B><!1><A HREF="Class.2.html#DOC.26.9">StaticMethodVector</A> getAllStaticMethods(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)</B></TT>
+<DD>returns list of static method that matches the name
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="UnknownMethodError.html">UnknownMethodError</A></B> <BR><DT><B>Parameters:</B><DD><B>name</B> -  name of the method to search for
+<BR><B>searchSuper</B> -  if true, super classes are searched if this class does not have the requested member
+<BR><DT><B>Returns:</B><DD>  the static method list of given id
+<BR><DD></DL><P>
+<A NAME="getConstructors"></A>
+<A NAME="DOC.26.36"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>const <!1><A HREF="Class.2.html#DOC.26.5">ConstructorList</A>&amp; getConstructors() const </B></TT>
+<DD>returns constructor method from name
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="UnknownMethodError.html">UnknownMethodError</A></B> <BR><DT><B>Parameters:</B><DD><B>name</B> -  name of the method to search for
+<BR><DT><B>Returns:</B><DD>  the constructor method
+<BR><DD></DL><P>
+<A NAME="hasDefaultConstructor"></A>
+<A NAME="DOC.26.37"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>bool hasDefaultConstructor() const </B></TT>
+<DD>determine if default constructor and newInstance() can be called
+
+<DL><DT><DT><B>Returns:</B><DD>  true if default constructor is defined<BR><DD></DL><P>
+<A NAME="getDefaultConstructor"></A>
+<A NAME="DOC.26.38"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>const <!1><A HREF="ConstructorMethod.html">ConstructorMethod</A>&amp; getDefaultConstructor() const  throw(<!1><A HREF="UnknownMethodError.html">UnknownMethodError</A>)</B></TT>
+<DD>return the default constructor
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="UnknownMethodError.html">UnknownMethodError</A></B> <BR><DT><B>Returns:</B><DD>  constructor if default constructor is defined
+<BR><DD></DL><P>
+<A NAME="getProperty"></A>
+<A NAME="DOC.26.39"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>const <!1><A HREF="Property.2.html">Property</A>&amp; getProperty(const char* name, bool searchSuper = true) const  throw(<!1><A HREF="UnknownPropertyError.html">UnknownPropertyError</A>)</B></TT>
+<DD>returns property from name
+
+<DL><DT><DT><B>Throws:</B><DD><B><!1><A HREF="UnknownPropertyError.html">UnknownPropertyError</A></B> <BR><DT><B>Parameters:</B><DD><B>name</B> -  name of the property to search for
+<BR><B>searchSuper</B> -  if true, super classes are searched if this class does not have the requested member
+<BR><DT><B>Returns:</B><DD>  the property of given name
+<BR><DD></DL><P>
+<A NAME="getTypeInfo"></A>
+<A NAME="DOC.26.40"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const std::type_info&amp; getTypeInfo() const </B></TT>
+<DD>return the RTTI std::type_info object for this class
+
+<DL><DT><DT><B>Returns:</B><DD>  type_info object<BR><DD></DL><P>
+<A NAME="getPtrTypeInfo"></A>
+<A NAME="DOC.26.41"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const std::type_info&amp; getPtrTypeInfo() const </B></TT>
+<DD>return the RTTI std::type_info object representing a ptr to this class
+
+<DL><DT><DT><B>Returns:</B><DD>  type_info object<BR><DD></DL><P>
+<A NAME="forName"></A>
+<A NAME="DOC.26.42"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline static   const <!1><A HREF="Class.2.html">Class</A>* forName(const std::string&amp; name)</B></TT>
+<DD>search and found the class based on name.  name must be the
+full name
+
+<DL><DT><DT><B>Returns:</B><DD>  Class if found or 0 if not found<BR><DD></DL><P>
+<A NAME="getClasses"></A>
+<A NAME="DOC.26.43"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline static   const <!1><A HREF="Class.2.html#DOC.26.7">ClassList</A>&amp; getClasses()</B></TT>
+<DD>return the entire class registry list
+
+<DL><DT><DT><B>Returns:</B><DD>  class registry<BR><DD></DL><P>
+<A NAME="dynamicCastFromSuper"></A>
+<A NAME="DOC.26.44"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   void* dynamicCastFromSuper(void* p) const </B></TT>
+<DD>attempt to dynamically cast a pointer which is the super class object
+
+<DL><DT><DT><B>Returns:</B><DD>  0 if dynamic cast is unsuccessful; non-zero otherwise<BR><DD></DL><P>
+<A NAME="dynamicCastFromSuperConst"></A>
+<A NAME="DOC.26.45"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   const void* dynamicCastFromSuperConst(const void* p) const </B></TT>
+<DD>attempt to dynamically cast a const pointer which is the super class object
+
+<DL><DT><DT><B>Returns:</B><DD>  0 if dynamic cast is unsuccessful; non-zero otherwise<BR><DD></DL><P>
+<A NAME="dynamicCastableFromSuper"></A>
+<A NAME="DOC.26.46"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   bool dynamicCastableFromSuper(void* super_ptr, const <!1><A HREF="Class.2.html">Class</A>* super) const </B></TT>
+<DD>determine whether dynamically cast a pointer which is the super class object
+
+<DL><DT><DT><B>Returns:</B><DD>  false if dynamic cast is unsuccessful; true otherwise<BR><DD></DL><P>
+<A NAME="dynamicCastableFromSuper"></A>
+<A NAME="DOC.26.47"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>inline   bool dynamicCastableFromSuper(const void* super_ptr, const <!1><A HREF="Class.2.html">Class</A>* super) const </B></TT>
+<DD>determine whether dynamically cast a const pointer which is the super class object
+
+<DL><DT><DT><B>Returns:</B><DD>  false if dynamic cast is unsuccessful; true otherwise<BR><DD></DL><P>
+<A NAME="defaultConstructor"></A>
+<A NAME="DOC.26.48"></A>
+<DT><IMG ALT="o" BORDER=0 SRC=icon2.gif><TT><B>const <!1><A HREF="ConstructorMethod.html">ConstructorMethod</A>* defaultConstructor() const </B></TT>
+<DD>find default constructor 
+<DL><DT><DD></DL><P></DL>
+
+<HR><DL><DT><B>This class has no child classes.</B></DL>
+
+<DL><DT><DT><B>Friends:</B><DD>  struct __register_field__<BR>  struct __register_static_field__<BR>  struct __register_method__<BR>  struct __register_static_method__<BR>  struct __register_constructor_method__<BR>  struct __register_property__<BR>  class MethodBase<BR><DD></DL><P><P><I><A HREF="index.html">Alphabetic index</A></I> <I><A HREF="HIER.html">HTML hierarchy of classes</A> or <A HREF="HIERjava.html">Java</A></I></P><HR>
+<BR>
+This page was generated with the help of <A HREF="http://docpp.sourceforge.net">DOC++</A>.
+</BODY>
+</HTML>

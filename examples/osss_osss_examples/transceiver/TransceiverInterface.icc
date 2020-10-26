@@ -1,0 +1,195 @@
+/*----------------------------------------------------------------------------------------
+ Copyright (c) 2005 Kuratorium OFFIS e.V., Oldenburg, Germany
+  
+ Name of the Library: OSSS (A library for synthesisable system level models in SystemC) 
+
+ Created for Project: ICODES (http://icodes.offis.de)
+
+ Created by: See AUTHORS (file)
+
+ 
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+Contact:
+ Kuratorium OFFIS e.V. (http://offis.de)
+ Escherweg 2
+ D-26121 Oldenburg
+ PHONE: *49 (441) 9722-0
+ FAX: *49 (441) 9722-102
+ ----------------------------------------------------------------------------------------*/
+
+TransceiverInterface::TransceiverInterface() : m_baudrate( 32 ), 
+                                               m_mode( withoutParity ), 
+					       m_sendBuffer( 0 ), 
+					       m_parityBit( 0 ),
+					       m_receiveBuffer( 0 ), 
+					       m_receivedParityBit( 0 ),
+                                               m_receiverEnabled( true ), 
+                                               m_received( false ), 
+                                               m_sent( true )
+{
+}
+
+
+// Overwrites m_sendBuffer and clears m_sent, if m_sent == true, 
+// else blocks.
+void
+TransceiverInterface::OSSS_EXPORTED(send(sc_biguint< 8 > byte) )
+{
+  m_sendBuffer = byte;
+  clearSent();
+}
+
+// Returns the content of m_receiveBuffer and clears m_received, 
+// iff m_received == true, else blocks.
+sc_biguint< 8 >
+TransceiverInterface::OSSS_EXPORTED(receive())
+{
+  clearReceived();
+  return( m_receiveBuffer );
+}
+
+// Returns the content of m_sendBuffer and sets m_sent, 
+// iff m_sent == false, else blocks.
+sc_biguint< 8 >
+TransceiverInterface::OSSS_EXPORTED(getSBuff())
+{
+  setSent();
+  return( m_sendBuffer );
+}
+
+// Overwrites m_receiveBuffer and sets m_received, iff m_received == false 
+// and m_receiverEnabled == true, else blocks.
+void
+TransceiverInterface::OSSS_EXPORTED(putRBuff(sc_biguint< 8 > byte))
+{
+  m_receiveBuffer = byte;
+  setReceived();  
+}
+
+// Sets m_parityBit to the passed value.
+void
+TransceiverInterface::OSSS_EXPORTED(setParityBit(bool parity))
+{
+  m_parityBit = parity;
+}
+
+// Returns m_parityBit.
+bool
+TransceiverInterface::OSSS_EXPORTED(getParityBit())
+{
+  return( m_parityBit );
+}
+
+// Sets m_receivedParityBit to the passed value.
+void
+TransceiverInterface::OSSS_EXPORTED(setReceivedParityBit(bool parity))
+{
+  m_receivedParityBit = parity;
+}
+
+// Returns m_receivedParityBit.
+bool
+TransceiverInterface::OSSS_EXPORTED(getReceivedParityBit())
+{
+  return( m_receivedParityBit );
+}
+
+// Clears m_receiverEnabled.
+void
+TransceiverInterface::OSSS_EXPORTED(disableReceiver())
+{
+  m_receiverEnabled = false;
+}
+
+// Sets m_receiverEnabled.
+void
+TransceiverInterface::OSSS_EXPORTED(enableReceiver())
+{
+  m_receiverEnabled = true;
+}
+
+// Sets m_baudrate to the passed value
+void
+TransceiverInterface::OSSS_EXPORTED(setBaudrate(unsigned short baudrate))
+{
+  m_baudrate = baudrate;
+}
+
+// Returns m_baudrate
+unsigned short
+TransceiverInterface::OSSS_EXPORTED(getBaudrate())
+{
+  return( m_baudrate );
+}
+
+// Sets m_mode to the passed value
+void
+TransceiverInterface::OSSS_EXPORTED(setMode(ModeType mode))
+{
+  m_mode = mode;
+}
+
+// Returns m_mode
+ModeType
+TransceiverInterface::OSSS_EXPORTED(getMode())
+{
+  return( m_mode );
+}
+
+bool
+TransceiverInterface::OSSS_EXPORTED(receiverEnabled())
+{
+  return( m_receiverEnabled );
+}
+
+// Returns m_receiverEnabled
+bool
+TransceiverInterface::OSSS_EXPORTED(blockUntilReceiverEnabled())
+{
+  return( m_receiverEnabled );
+}
+
+//--------------------------------------------------------------------
+
+// Clears m_received
+void
+TransceiverInterface::clearReceived()
+{
+  m_received = false;
+}
+
+// Sets m_received to true & m_receiverEnabled.
+void
+TransceiverInterface::setReceived()
+{
+  m_received = m_receiverEnabled;
+}
+  
+// Clears m_sent
+void
+TransceiverInterface::clearSent()
+{
+  m_sent = false;
+}
+
+// Sets m_sent to true
+void
+TransceiverInterface::setSent()
+{
+  m_sent = true;
+}
+
+

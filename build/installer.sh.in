@@ -1,0 +1,279 @@
+#!/bin/bash
+# Copyright (c) 2007  OFFIS e.V., Oldenburg, Germany
+# All rights reserved.
+# -------------------------------------------------------------------
+# Self-contained installation script
+# -------------------------------------------------------------------
+#
+# This file is part of the OSSS simulation library.
+# Copyright (c) 2007 OFFIS e.V. Institute for Information Technology
+#
+# See the files COPYING and LICENSE included with the OSSS library
+# for copyright and license details. If you have not received these
+# files, please contact OFFIS e.V. for further information.
+#
+# OFFIS e.V.
+# Institute for Information Technology
+#   Escherweg 2
+#   D-26121 Oldenburg
+#   Germany
+# www  : http://offis.de
+# phone: +49 (441) 9722-0
+# fax  : +49 (441) 9722-102
+# -------------------------------------------------------------------
+# :flavour: (all,d)
+
+#debugging
+#set -x
+# exit on error
+set -e
+
+find_program()
+{
+  __program="$1"
+  __which_program="`which ${__program} 2>/dev/null`"
+  [ -z "${__which_program}" ] && return 1
+  case "${__which_program}" in
+    /*)
+      echo "${__which_program}"
+      return 0
+    ;;
+  esac
+  return 1
+}
+
+error_exit()
+{
+  __line_prefix="[ERR]"
+  while [ $# -gt 0 ] ; do
+    echo "${__line_prefix}" "$1" >&2
+    __line_prefix="     "
+    shift
+  done
+  exit 1
+}
+
+get_options()
+{
+  # init
+  DESTDIR=.
+  OPT_HELP=no
+  OPT_LICENSE=no
+  OPT_FORCE=no
+  OPT_BUILD=no
+  OPT_DIR=no
+  # parse command line args
+  while [ $# -gt 0 ] ; do
+    __option="$1"
+    shift
+    [ "${__option}" = "--" ] && break
+    case "${__option}" in
+      -h|--help)
+        OPT_HELP=yes
+      ;;
+      -l|--license-only)
+        OPT_LICENSE=yes
+        ;;
+      -f|--force)
+        OPT_FORCE=yes
+      ;;
+      -b|--build)
+        OPT_BUILD=yes
+      ;;
+      -*)
+        # unknown option string found
+        error_exit "Unknown option '${__option}'!" \
+                   "See '${INSTALL} -h' for help."
+        ;;
+      *)
+        if [ -n "${__option}" ] ; then
+          OPT_DIR=yes
+          # non-option found - interpret as directory
+          DESTDIR="${__option}"
+          break
+        fi
+        # empty arg - ignoring
+      ;;
+    esac
+  done
+  # no directory yet, but parameters left
+  [ "${OPT_DIR}" = "no" -a -n "$1" ] && DESTDIR="${1}"
+  return 0
+
+} # get_options()
+
+print_greeting()
+{
+  cat <<ENDOFGREETING
+${LIBDESC} ${VERSION} installer script
+Copyright (c) 2007 OFFIS e.V., Oldenburg, Germany
+ENDOFGREETING
+}
+
+print_usage()
+{
+  print_greeting
+  cat <<ENDOFUSAGE
+Extracts and optionally builds the ${LIBDESC}.
+Usage  : `basename ${INSTALL}` [options] [--] [destdir]
+Options:
+  -b,--build       : Try to build the library after extraction.
+  -f,--force       : Overwrite existing files.
+  -l,--license-only: Print license and exit.
+  -h,--help        : Print this help text.
+
+If the parameter "[destdir]" is given, the archive is extracted
+to "[destdir]/${LIBNAME}-${VERSION}". Defaults to the current directory.
+ENDOFUSAGE
+  exit 0
+}
+
+print_license()
+{
+  __pagers="more less pager"
+  for __pager in ${__pagers} ; do
+    if find_program "${__pager}" >/dev/null ; then
+        PAGER="${__pager}"
+        break
+    fi
+  done
+  if [ -z "${PAGER}" ] ; then
+    error_exit "No suitable pager application found in path!" \
+      "Please set the environment variable PAGER to point to one."
+  fi
+  if [ "${PAGER}" = "less" ]; then
+      PAGER="less -E"
+  fi
+  get_file $LICENSE_FILE | ${PAGER}
+}
+
+ask_confirm()
+{
+  __question="$1"
+  echo -n "${__question} yes/[no]: "
+  read __answer __remain
+  case "${__answer}" in
+    [yY][eE][sS])
+      return 0
+    ;;
+    *)
+      return 1
+    ;;
+  esac
+}
+
+calc_sizes()
+{
+  if [ ! -f "$0" ] ; then
+    error_exit "Failed to determine size of archive!" \
+               "Please call ${INSTALL} with full path."
+  fi
+  WC="`find_program wc`"
+  if [ -z "${WC}" ] ; then
+    error_exit "Failed to find 'wc' utility."
+               "Please ensure, that it is in your path."
+  fi
+  full_size=`cat $0 | "${WC}" -c`
+  lic_size=$1
+  arch_size=$2
+  my_size=`expr ${full_size} - \( ${arch_size} + ${lic_size} \) `
+
+  LICENSE_FILE="${my_size} ${lic_size}"
+  ARCHIVE_FILE="`expr ${full_size} - ${arch_size}` ${arch_size}"
+}
+
+extract_archive()
+{
+  TAR="`find_program tar`"
+  if [ -z "${TAR}" ] ; then
+    error_exit "Failed to find 'tar' utility."
+               "Please ensure, that it is in your path."
+  fi
+  tar_opts=
+  if [ "${OPT_DIR}" = "yes" ] ; then
+    tar_opts="-C ${DESTDIR}"
+    if [ ! -d "${DESTDIR}" ] ; then
+      error_exit "Directory '${DESTDIR}' does not exist!" \
+                 "Please select a valid destination directory."
+    fi
+  fi
+  if [ ! "${OPT_FORCE}" = "yes" ] ; then
+    tar_opts="${tar_opts} -xkf "
+    if [ -d "${DESTDIR}/${LIBNAME}-${VERSION}" ] ; then
+      error_exit "Target directory '${DESTDIR}/${LIBNAME}-${VERSION}' exists!" \
+                 "Add '-f' option to allow overwriting existing files."
+    fi
+  else
+    tar_opts="${tar_opts} -xf "
+  fi
+  echo "Extracting ${LIBDESC} ..."
+  # do the extraction
+  get_file ${ARCHIVE_FILE} | ${TAR} ${tar_opts} -
+  if [ "$?" -ne 0 ] ; then
+    error_exit "Library extraction failed."
+  fi
+}
+
+build_library()
+{
+  [ "${OPT_BUILD}" = "yes" ] || return 0
+  echo "Building ${LIBDESC} ..."
+  MAKE="`find_program gmake || find_program make`"
+  if [ -z "${MAKE}" ] ; then
+    error_exit "Failed to determine path to GNU Make." \
+               "Please build library manually."
+  fi
+  ${MAKE} -C "${DESTDIR}/${LIBNAME}-${VERSION}"
+}
+
+get_file()
+{
+  __start=$1
+  __size=$2
+  DD="`find_program dd`"
+  if [ -z "${DD}" ] ; then
+    error_exit "Failed to determine path to 'dd' utility." \
+               "Please ensure that it exists in your path."
+  fi
+  GUNZIP="`find_program gunzip`"
+  if [ -z "${DD}" ] ; then
+    error_exit "Failed to determine path to 'gunzip' utility." \
+               "Please ensure that it exists in your path."
+  fi
+  "${DD}" ibs=1 skip=${__start} count=${__size}     \
+     if="${INSTALL}" 2>/dev/null | "${GUNZIP}" -c
+}
+
+run()
+{
+  if [ "${OPT_HELP}"  = "yes" ] ; then
+    print_usage
+  elif [ "${OPT_LICENSE}" = yes ] ; then
+    calc_sizes $SIZES
+    get_file $LICENSE_FILE
+  else
+    print_greeting
+    calc_sizes $SIZES
+    print_license
+    ask_confirm "Do you accept the License Agreement?" || \
+        error_exit "You need to accept the License Agreement!" \
+                   "Sorry, exiting..."
+    extract_archive || return $?
+    build_library   || return $?
+    echo "Done."
+  fi
+  return $?
+}
+
+INSTALL=$0
+# these line gets replaced during creation of "real" installer
+LIBNAME=@OSSS_LIBNAME@
+VERSION=@OSSS_VERSION@
+LIBDESC=@OSSS_LIBDESC@
+SIZES=@OSSS_ARCHIVE_SIZES@
+# do the work
+get_options "$@"
+run
+exit 0
+# end of installation script
+# $Id: installer.sh.in 2419 2008-07-07 16:12:18Z philipph $

@@ -1,0 +1,26 @@
+# KDevelop Custom Project File List
+AAC.cpp
+AAC.h
+Codec.cpp
+Codec.h
+Crypto.cpp
+Crypto.h
+Defines.h
+EncodedSample.cpp
+EncodedSample.h
+GuardedRingBuffer.h
+Makefile
+MixerModule.cpp
+MixerModule.h
+MP3.cpp
+MP3.h
+PlayerModule.h
+RingBuffer.h
+SecurityModule.cpp
+SecurityModule.h
+Testbench.cpp
+Testbench.h
+Top.cpp
+Vorbis.cpp
+Vorbis.h
+WaveSample.h

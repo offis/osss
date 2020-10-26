@@ -1,0 +1,100 @@
+/*------------------------------------------------------------------------------
+ Copyright (c) 2005 Kuratorium OFFIS e.V., Oldenburg, Germany
+  
+ Name of the Library: OSSS (A library for synthesisable system level models 
+                            in SystemC) 
+
+ Created for Project: ICODES (http://icodes.offis.de)
+
+ Created by: See AUTHORS (file)
+
+ 
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+Contact:
+ Kuratorium OFFIS e.V. (http://offis.de)
+ Escherweg 2
+ D-26121 Oldenburg
+ PHONE: *49 (441) 9722-0
+ FAX: *49 (441) 9722-102
+ -----------------------------------------------------------------------------*/
+
+//Process handling the writes to slaves
+template <int nr>
+void Master<nr>::write()
+{
+  sc_uint< 32 > addr;
+  sc_uint< 32 > value;
+  addr = nr;
+
+  bridge_write_port->reset();
+  wait();
+
+  while ( true )
+  {
+    bridge_write_port->write(addr, value);
+    wait();
+#ifndef SYNTHESIS
+    cout << "at: " << sc_time_stamp()
+	 << " Master " << name() 
+	 << ":\t WRITE: value" << value << "; address " << addr <<endl;
+#endif //SYNTHESIS
+    addr = addr + 100;
+    value = value + 1;
+    if (addr >= 300)
+    {
+      addr = addr - 300;
+    }
+  }
+}
+
+//Process handling read accesses to slaves
+template <int nr>
+void Master<nr>::read()
+{
+  sc_uint< 32 > addr;
+  sc_uint< 32 > readdata;
+  addr = nr;
+  output.write( 0 );
+
+  bridge_read_port->reset();
+  wait();
+
+  while( true )
+  {
+    bridge_read_port->read(addr);
+    wait();
+#ifndef SYNTHESIS
+    cout << "at: " << sc_time_stamp() 
+	 << " Master " << name() 
+	 << ":\t READ: address "<< addr << " (start)"<< endl;
+#endif //SYNTHESIS
+    readdata = bridge_read_port->readd();
+    wait();
+#ifndef SYNTHESIS
+    cout << "at: " << sc_time_stamp()
+	 << " Master " << name() 
+	 << ":\t READ: value " << readdata << "(complete)" << endl;
+#endif //SYNTHESIS
+    output.write( readdata );
+    
+    addr = addr + 100;
+    if (addr >= 300)
+    {
+      addr = addr - 300;
+    }
+  }
+}
+    
